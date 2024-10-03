@@ -1,5 +1,10 @@
 class Robot {
+    private void Autonomous(){
+
+    }
+
+
     public static void main(String[] args)
     {
-        System.out.println("I am a Geek");
+      Autonomous()
     }
