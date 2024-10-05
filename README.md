@@ -1,6 +1,6 @@
 # Java Programming Tryouts
 
-## TODO: Diagram and make this make more sense.
+## TODO: Clarify wheel/drive speeds, create an empty template, create a diagram of everything, test this all in github codespaces, test this all on harry chen.
 
 ## Overview
 You are a programmer on your school's FIRST robotics team, for the CRESCENDO season. The robot has been built and it is your job to
@@ -12,18 +12,78 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 - The robot drives backwards 5 meters to a game piece.
 - The robot intakes the game piece for 2 seconds.
 - The robot drives forwards 5 meters back to the goal, and shoots the game piece for 3 seconds.
-- The robot drives backwards 5 meters, turns 90 degrees, and then drives 2 meters forwards to another game piece.
+- The robot drives backwards 5 meters, turns clockwise 90 degrees, and then drives 2 meters backwards to another game piece.
 - The robot intakes the game piece so for 2 seconds it's ready for the teleoperated period.
 - The autonomous routine is now complete.
 
 ## What You Are Given
-- A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. You can also get the speed of the motor, which is its rotations per minute. In this case of your robot, a positive speed on the drive wheels will move the robot forward relative its front, and a negative speed will move the robot backwards relative to its front.
+- A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is spinning at its maximum speed. ***scroll below to see function documentation on the Motor class***
+- A **Util** class containing many utility functions. The most important ones **toDriveSpeeds()** and **toWheelSpeeds()**, which you'll have to use to control the drivetrain. ***scroll below to see function documentation on the Util class***
+- Existing **Drive**, **Shooter**, and **Intake** classes that you will fill with code. ***see programming section below for more info***
+
+## Class Documentation
+## **Motor Class**
+
+### `public final static double MAX_SPEED = 30`
+
+The max speed of this motor in rotations per second.
+
+### `public void setPower(double power)`
+
+Sets the power of the motor [-1, +1].
+
+### `public double getSpeed()`
+
+Returns the speed of the motor in rotations per second.
+
+
+## **Util Class**
+
+### `public static void sleep(double seconds)`
+
+Pause execution for some amount of time.
+
+ * **Parameters:** `seconds` — The seconds to sleep for.
+
+### `public static double clamp(double input, double min, double max)`
+
+Clamps the input value between min and max.
+
+### `public static double sign(double num)`
+
+Returns the sign of the input value.
+
+ * **Returns:** -1 for negative, 1 for positive, 0 for 0.
+
+### `public static WheelSpeeds toWheelSpeeds( DriveSpeeds driveSpeeds, double trackWidth )`
+
+Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds.
+
+ * **Parameters:**
+   * `driveSpeeds` — The desired drive speeds.
+   * `trackWidth` — The track width between the left and right wheels.
+
+     <p>
+ * **Returns:** A new {@link WheelSpeeds} object.
+
+### `public static DriveSpeeds toDriveSpeeds( WheelSpeeds wheelSpeeds, double trackWidth )`
+
+Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds.
+
+ * **Parameters:**
+   * `wheelSpeeds` — The current wheel speeds on the drivetrain.
+   * `trackWidth` — The track width between the left and right wheels.
+
+     <p>
+ * **Returns:** A new {@link DriveSpeeds} object.
+
+
 
 ## Programming
-- The **Drive** subsystem should be its own class, with private instances of each **Motor**.
-- The **Shooter** subsystem should be its own class, with private instances of each **Motor**.
-- The **Intake** subsystem should be its own class, with private instaces of each **Motor**.
-- Each subsystem class should be defined in the **subsystems** folder.
+- The **Drive** subsystem is its own class, with empty methods you must code in.
+- The **Shooter** subsystem is its own class, with empty methods you must code in.
+- The **Intake** subsystem is its own class, with empty methods you must code in.
+- Each subsystem class is be defined in the **subsystems** folder.
 - Each subsystem should be instantiated in the **Robot** class, and the autonomous routine must be programmed in the **autonomous()**
 function of the robot class.
 

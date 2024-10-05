@@ -10,14 +10,6 @@ public class Drive {
     private final Motor _leftMotor = new Motor();
     private final Motor _rightMotor = new Motor();
 
-    public void test() {
-        System.out.println(Constants.maxTranslationMetersPerSecond);
-
-        System.out.println(
-            Util.toDriveSpeeds(new WheelSpeeds(Constants.maxTranslationMetersPerSecond, Constants.maxTranslationMetersPerSecond), Constants.trackWidthMeters).translationMetersPerSecond
-        );
-    }
-
     /** Drive straight the specified distance in meters at the specified speed (m/s). */
     public void driveDistance(double distance) {
         System.out.println("DRIVING " + distance + " METERS");

@@ -50,7 +50,7 @@ public class Util {
     /**
      * Pause execution for some amount of time.
      * 
-     * @param seconds - The seconds to sleep for.
+     * @param seconds The seconds to sleep for.
      */
     public static void sleep(double seconds) {
         try {
