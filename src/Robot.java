@@ -15,6 +15,8 @@ class Robot {
   private void autonomous() {
     // write your autonomous routine here:
 
+    // _drive.test();
+
     _shooter.shoot();
     _drive.driveDistance(-5);
     _intake.intake();

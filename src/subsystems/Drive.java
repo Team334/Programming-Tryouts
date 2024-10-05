@@ -3,27 +3,34 @@ package src.subsystems;
 import lib.Motor;
 import lib.Util;
 import lib.Util.DriveSpeeds;
+import lib.Util.WheelSpeeds;
+import src.Constants;
 
 public class Drive {
     private final Motor _leftMotor = new Motor();
     private final Motor _rightMotor = new Motor();
 
-    /** The circumference of each drive wheel .*/
-    private final double WHEEL_CIRCUMFERENCE = Math.PI * 2 * 0.05;
-    private final double MAX_SPEED = (Motor.MAX_SPEED * WHEEL_CIRCUMFERENCE) / 60; // max speed m/s
+    public void test() {
+        System.out.println(Constants.maxTranslationMetersPerSecond);
 
-    public final double TRACK_WIDTH = 100;
+        System.out.println(
+            Util.toDriveSpeeds(new WheelSpeeds(Constants.maxTranslationMetersPerSecond, Constants.maxTranslationMetersPerSecond), Constants.trackWidthMeters).translationMetersPerSecond
+        );
+    }
 
     /** Drive straight the specified distance in meters at the specified speed (m/s). */
     public void driveDistance(double distance) {
         System.out.println("DRIVING " + distance + " METERS");
 
-        double speed = 1;
+        WheelSpeeds wheelSpeeds = Util.toWheelSpeeds(
+            new DriveSpeeds(Constants.maxTranslationMetersPerSecond * Util.sign(distance), 0),
+            Constants.trackWidthMeters
+        );
 
-        _leftMotor.setPower(speed / MAX_SPEED);
-        _rightMotor.setPower(speed / MAX_SPEED);
+        _leftMotor.setPower(wheelSpeeds.leftMetersPerSecond / Constants.maxWheelSpeedMetersPerSecond);
+        _rightMotor.setPower(wheelSpeeds.rightMetersPerSecond / Constants.maxWheelSpeedMetersPerSecond);
 
-        Util.sleep(Math.abs(distance / speed));
+        Util.sleep(Math.abs(distance / Constants.maxTranslationMetersPerSecond));
 
         _leftMotor.setPower(0);
         _rightMotor.setPower(0);
@@ -32,19 +39,16 @@ public class Drive {
     /** Turns the specified degrees. */
     public void turnDegrees(double degrees) {
         System.out.println("TURNING " + degrees + " DEGREES");
-        System.out.println(1 / MAX_SPEED);
+     
+        WheelSpeeds wheelSpeeds = Util.toWheelSpeeds(
+            new DriveSpeeds(0, Constants.maxOmegaDegreesPerSecond), 
+            Constants.trackWidthMeters
+        );
 
-        double leftSpeed = 1;
-        double rightSpeed = -1;
+        _leftMotor.setPower(wheelSpeeds.leftMetersPerSecond / Constants.maxWheelSpeedMetersPerSecond);
+        _rightMotor.setPower(wheelSpeeds.rightMetersPerSecond / Constants.maxWheelSpeedMetersPerSecond);
 
-        DriveSpeeds speeds = Util.forwardKinematics(leftSpeed, rightSpeed, TRACK_WIDTH);
-
-        System.out.println(speeds.omega);
-
-        _leftMotor.setPower(leftSpeed / MAX_SPEED);
-        _rightMotor.setPower(rightSpeed / MAX_SPEED);
-
-        Util.sleep(Math.abs(degrees / speeds.omega));
+        Util.sleep(Math.abs(degrees / Constants.maxOmegaDegreesPerSecond));
 
         _leftMotor.setPower(0);
         _rightMotor.setPower(0);
