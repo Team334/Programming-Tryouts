@@ -16,6 +16,8 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 - The robot intakes the game piece so for 2 seconds it's ready for the teleoperated period.
 - The autonomous routine is now complete.
 
+![Alt text](Diagram.png "Diagram")
+
 ## What You Are Given
 - A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is spinning at its maximum speed. ***scroll below to see function documentation on the Motor class***
 - A **Util** class containing many utility functions. The most important ones **toDriveSpeeds()** and **toWheelSpeeds()**, which you'll have to use to control the drivetrain. ***scroll below to see function documentation on the Util class***
