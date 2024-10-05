@@ -1,25 +1,29 @@
 package src;
 
 import src.subsystems.Drive;
+import src.subsystems.Intake;
+import src.subsystems.Shooter;
 
 class Robot {
-  private Drive _drive = new Drive();
+  private final Drive _drive = new Drive();
+  private final Shooter _shooter = new Shooter();
+  private final Intake _intake = new Intake();
 
   /**
    * Code to run during autonomous.
    */
   private void autonomous() {
-    // write your autonomous routine here.
+    // write your autonomous routine here:
 
-    // SHOOT
-    _drive.driveDistance(-1, 5, 1);
-    // INTAKE
-    _drive.driveDistance(1, 5, 1);
-    // SHOOT
-    _drive.driveDistance(-1, 5, 1);
-    // TURN 90 DEG
-    _drive.driveDistance(1, 2, 1);
-    // INTAKE
+    _shooter.shoot();
+    _drive.driveDistance(-5);
+    _intake.intake();
+    _drive.driveDistance(5);
+    _shooter.shoot();
+    _drive.driveDistance(-5);
+    _drive.turnDegrees(90);
+    _drive.driveDistance(2);
+    _intake.intake();
   }
 
 

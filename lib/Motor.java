@@ -3,6 +3,7 @@ package lib;
 public class Motor {
     private double _motorPower;
 
+    /** The max speed of this motor in RPM. */
     public final static double MAX_SPEED = 100; 
 
     /**
@@ -10,6 +11,7 @@ public class Motor {
      */
     public void setPower(double power) {
         _motorPower = Util.clamp(power, -1, 1);
+        System.out.println(_motorPower);
     }
 
     /**

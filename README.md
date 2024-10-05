@@ -4,16 +4,16 @@
 
 ## Overview
 You are a programmer on your school's FIRST robotics team, for the CRESCENDO season. The robot has been built and it is your job to
-program an autonomous routine for it. However, before you can program the autonomous routine, you must program the individual "subsystems" on the robot before having them work together in a full routine. The robot consists of three subsystems, the **Drive** subsystem, the **Shooter** subsystem, and the **Intake** subsystem. The **Drive** subsystem consists of two Drive wheels, one on the left side of the robot and one on the right side, each powered by a single motor. The **Shooter** subsystem is a fixed-angle shooter on the front of the robot, consisting of multiple flywheels all powered by a single motor. The **Intake** subsystem is on the back of the robot, and is also fixed on the robot, and also consists of several wheels that feed the game piece into the robot, all powered by a single motor. Your goal is to program the autonomous routine described below for the robot.
+program an autonomous routine for it. However, before you can program the autonomous routine, you must program the individual "subsystems" (individual mechanisms) on the robot before having them work together in a full routine. The robot consists of three subsystems, the **Drive** subsystem, the **Shooter** subsystem, and the **Intake** subsystem. The **Drive** subsystem consists of two drive wheels, one on the left side of the robot and one on the right side, each powered by a single motor. The **Shooter** subsystem is a fixed-angle shooter on the front of the robot, consisting of multiple flywheels all powered by a single motor. The **Intake** subsystem is on the back of the robot, it is also fixed on the robot, and it also consists of several wheels that feed the game piece into the robot, all powered by a single motor. Your goal is to program the autonomous routine described below for the robot.
 
 ## Autonomous Routine
 The robot is placed directly in front of the goal, pre-loaded with the game piece. The front (where the shooter is) is facing the goal. The autonoumous routine is as follows:
-- The robot shoots the piece into the goal.
-- The robot drives back 5 meters to a game piece.
-- The robot intakes the game piece.
-- The robot drives forward 5 meters back to the goal, and shoots the game piece.
-- The robot drive forward 5 meters, turns 90 degrees, and then drives 2 meters to another game piece.
-- The robot intakes the game piece so it's ready for the teleoperated period.
+- The robot shoots the piece into the goal for 3 seconds.
+- The robot drives backwards 5 meters to a game piece.
+- The robot intakes the game piece for 2 seconds.
+- The robot drives forwards 5 meters back to the goal, and shoots the game piece for 3 seconds.
+- The robot drives backwards 5 meters, turns 90 degrees, and then drives 2 meters forwards to another game piece.
+- The robot intakes the game piece so for 2 seconds it's ready for the teleoperated period.
 - The autonomous routine is now complete.
 
 ## What You Are Given
