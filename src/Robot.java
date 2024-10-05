@@ -24,7 +24,7 @@ class Robot {
     _shooter.shoot();
     _drive.driveDistance(-5);
     _drive.turnDegrees(90);
-    _drive.driveDistance(2);
+    _drive.driveDistance(-2);
     _intake.intake();
   }
 
