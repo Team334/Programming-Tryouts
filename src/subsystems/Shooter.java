@@ -4,14 +4,16 @@ import lib.Motor;
 import lib.Util;
 
 public class Shooter {
-    private final Motor _flywheelMotor = new Motor();
+    // the shooter motor
+    private final Motor _shooterMotor = new Motor();
 
     /** Shoot the game piece for 3 seconds. */
     public void shoot() {
         System.out.println("SHOOTING");
 
-        _flywheelMotor.setPower(0.8);
-        Util.sleep(3);
-        _flywheelMotor.setPower(0);
+        // SUGGESTION:
+        // power shooter motor
+        // sleep for the necessary amount of time
+        // turn off shooter motor
     }
 }

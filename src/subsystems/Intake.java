@@ -1,17 +1,20 @@
 package src.subsystems;
 
 import lib.Motor;
-import lib.Util;
 
 public class Intake {
+    // the intake motor
     private final Motor _intakeMotor = new Motor();
 
-    /** Intakes the note for 2 seconds. */
+    /** 
+     * Intakes the game piece for 2 seconds.
+     */
     public void intake() {
         System.out.println("INTAKING");
 
-        _intakeMotor.setPower(0.8);
-        Util.sleep(2);
-        _intakeMotor.setPower(0);
+        // SUGGESTION:
+        // power intake motor
+        // sleep for the necessary amount of time
+        // turn off intake motor
     }
 }

@@ -5,6 +5,7 @@ import src.subsystems.Intake;
 import src.subsystems.Shooter;
 
 class Robot {
+  // instances of each subsystem
   private final Drive _drive = new Drive();
   private final Shooter _shooter = new Shooter();
   private final Intake _intake = new Intake();
@@ -15,17 +16,15 @@ class Robot {
   private void autonomous() {
     // write your autonomous routine here:
 
-    // _drive.test();
-
-    _shooter.shoot();
-    _drive.driveDistance(-5);
-    _intake.intake();
-    _drive.driveDistance(5);
-    _shooter.shoot();
-    _drive.driveDistance(-5);
-    _drive.turnDegrees(90);
-    _drive.driveDistance(-2);
-    _intake.intake();
+    // SHOOT CALL
+    // DRIVE DISTANCE CALL (5 meters backwards) 
+    // INTAKE CALL
+    // DRIVE DISTANCE CALL (5 meters forwards)
+    // SHOOT CALL
+    // DRIVE DISTANCE CALL (5 meters backwards)
+    // TURN DEGREES CALL (90 degrees clockwise)
+    // DRIVE DISTANCE CALL (2 meters backwards)
+    // INTAKE CALL
   }
 
 
