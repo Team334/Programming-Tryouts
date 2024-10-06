@@ -15,7 +15,7 @@ public class Drive {
         System.out.println("DRIVING " + distance + " METERS");
 
         WheelSpeeds wheelSpeeds = Util.toWheelSpeeds(
-            new DriveSpeeds(Constants.maxTranslationMetersPerSecond * Util.sign(distance), 0),
+            new DriveSpeeds(Constants.maxTranslationMetersPerSecond * Math.signum(distance), 0),
             Constants.trackWidthMeters
         );
 

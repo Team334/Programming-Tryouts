@@ -70,15 +70,6 @@ public class Util {
     }
 
     /**
-     * Returns the sign of the input value. 
-     * 
-     * @return -1 for negative, 1 for positive, 0 for 0.
-     */
-    public static double sign(double num) {
-        return Math.signum(num);
-    }
-
-    /**
      * Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds.
      * 
      * @param driveSpeeds The desired drive speeds.
