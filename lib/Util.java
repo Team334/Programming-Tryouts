@@ -8,7 +8,7 @@ public class Util {
         /** Translational speed in meters per second. */
         public final double translationMetersPerSecond;
 
-        /** Rotational speed in degrees per second. */
+        /** Rotational speed in degrees per second (positive is clockwise, negative is counter-clockwise). */
         public final double omegaDegreesPerSecond;
 
         public DriveSpeeds(

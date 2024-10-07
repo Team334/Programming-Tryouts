@@ -16,7 +16,7 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 - The robot intakes the game piece so for 2 seconds it's ready for the teleoperated period.
 - The autonomous routine is now complete.
 
-![Alt text](Diagram.png "Diagram")
+![Alt text](diagram.png "Diagram")
 
 ## What You Are Given
 - A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is spinning at its maximum speed. ***scroll below to see function documentation on the Motor class***
@@ -24,40 +24,23 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 - Existing **Drive**, **Shooter**, and **Intake** classes that you will fill with code. ***see programming section below for more info***
 
 ## Class Documentation
-## **Motor Class**
+## Motor Class *(these are the most important functions, however there are more in lib/Motor.java)*
 
-### `public final static double MAX_SPEED = 30`
-
-The max speed of this motor in rotations per second.
-
-### `public void setPower(double power)`
+## `public void setPower(double power)`
 
 Sets the power of the motor [-1, +1].
 
-### `public double getSpeed()`
+<br>
 
-Returns the speed of the motor in rotations per second.
+## Util Class *(these are the most important functions, however there are more in lib/Util.java)*
 
-
-## **Util Class**
-
-### `public static void sleep(double seconds)`
+## `public static void sleep(double seconds)`
 
 Pause execution for some amount of time.
 
  * **Parameters:** `seconds` — The seconds to sleep for.
 
-### `public static double clamp(double input, double min, double max)`
-
-Clamps the input value between min and max.
-
-### `public static double sign(double num)`
-
-Returns the sign of the input value.
-
- * **Returns:** -1 for negative, 1 for positive, 0 for 0.
-
-### `public static WheelSpeeds toWheelSpeeds( DriveSpeeds driveSpeeds, double trackWidth )`
+## `public static WheelSpeeds toWheelSpeeds( DriveSpeeds driveSpeeds, double trackWidth )`
 
 Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds.
 
@@ -68,7 +51,7 @@ Performs inverse kinematics for a tank drive, converting drive speeds to wheel s
      <p>
  * **Returns:** A new {@link WheelSpeeds} object.
 
-### `public static DriveSpeeds toDriveSpeeds( WheelSpeeds wheelSpeeds, double trackWidth )`
+## `public static DriveSpeeds toDriveSpeeds( WheelSpeeds wheelSpeeds, double trackWidth )`
 
 Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds.
 
@@ -79,14 +62,38 @@ Performs forward kinematics for a tank drive, converting wheel speeds to drive s
      <p>
  * **Returns:** A new {@link DriveSpeeds} object.
 
+<br>
 
+## DriveSpeeds Class
+
+Purpose: Represents the speeds for a tank drivetrain.
+
+## `public final double translationMetersPerSecond`
+
+Translational speed in meters per second.
+
+## `public final double omegaDegreesPerSecond`
+
+Rotational speed in degrees per second (positive is clockwise, negative is counter-clockwise).
+
+## WheelSpeeds Class
+
+Purpose: Represents the individual wheel speeds for a tank drivetrain.
+
+## `public final double leftMetersPerSecond`
+
+The speed of the left wheel in meters per second.
+
+## `public final double rightMetersPerSecond`
+
+The speed of the right wheel in meters per second.
 
 ## Programming
-- The **Drive** subsystem is its own class, with empty methods you must code in.
-- The **Shooter** subsystem is its own class, with empty methods you must code in.
-- The **Intake** subsystem is its own class, with empty methods you must code in.
+- The **Drive** subsystem is its own class, with template methods you must code in.
+- The **Shooter** subsystem is its own class, with template methods you must code in.
+- The **Intake** subsystem is its own class, with template methods you must code in.
 - Each subsystem class is be defined in the **subsystems** folder.
 - Each subsystem should be instantiated in the **Robot** class, and the autonomous routine must be programmed in the **autonomous()**
 function of the robot class.
 
-## **Good Luck!**
+## **Good Luck! (NOTE: you may look up anything you need, just don't copy code directly without understanding)**
