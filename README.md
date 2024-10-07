@@ -42,7 +42,8 @@ Pause execution for some amount of time.
 
 ## `public static WheelSpeeds toWheelSpeeds( DriveSpeeds driveSpeeds, double trackWidth )`
 
-Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds.
+Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds. This'll take speeds meant for the 
+whole drive train and convert them into the speeds for each individual wheel.
 
  * **Parameters:**
    * `driveSpeeds` — The desired drive speeds.
@@ -53,7 +54,8 @@ Performs inverse kinematics for a tank drive, converting drive speeds to wheel s
 
 ## `public static DriveSpeeds toDriveSpeeds( WheelSpeeds wheelSpeeds, double trackWidth )`
 
-Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds.
+Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds. This'll take the speeds of
+each individual wheel and convert it into speeds of the whole drive train.
 
  * **Parameters:**
    * `wheelSpeeds` — The current wheel speeds on the drivetrain.
