@@ -15,6 +15,7 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 - The robot drives backwards 5 meters, turns clockwise 90 degrees, and then drives 2 meters backwards to another game piece.
 - The robot intakes the game piece for 2 seconds, and now it's ready for the teleoperated period.
 - The autonomous routine is now complete.
+- (note: all drivetrain movements are at max speed, driving is at max speed, and so is rotation)
 
 ![Alt text](Diagram.png "Diagram")
 
