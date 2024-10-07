@@ -36,6 +36,6 @@ public class Drive {
         // set motors to their calculated speeds
         // sleep for a calculated amount of time
         // set motors to 0 speed
-        // MAKE SURE TO UTILIZE AND OF THE CONSTANTS / UTILITY FUNCTIONS
+        // MAKE SURE TO UTILIZE ANY OF THE CONSTANTS / UTILITY FUNCTIONS
     }
 }
