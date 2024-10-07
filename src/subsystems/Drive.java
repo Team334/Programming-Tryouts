@@ -17,7 +17,7 @@ public class Drive {
         
         // SUGGESTION:
         // find wheel speeds for max translational speed using Util.toWheelSpeeds()
-        // set motors to that speed
+        // set motors to their calculated speeds
         // sleep for a calculated amount of time
         // set motors to 0 speed
         // MAKE SURE TO UTILIZE ANY OF THE CONSTANTS / UTILITY FUNCTIONS
@@ -33,7 +33,7 @@ public class Drive {
      
         // SUGGESTION:
         // find wheel speeds for max rotational speed using Util.toWheelSpeeds()
-        // set motors to that speed
+        // set motors to their calculated speeds
         // sleep for a calculated amount of time
         // set motors to 0 speed
         // MAKE SURE TO UTILIZE AND OF THE CONSTANTS / UTILITY FUNCTIONS
