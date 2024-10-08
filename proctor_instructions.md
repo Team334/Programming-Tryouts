@@ -14,6 +14,7 @@
 - They can look anything up (and if they are copying code, make sure they actually understand it).
 
 ## At The End
+- Ask about their personal project.
 - Ask why they want to join programming?
 - (any other questions?)
 - Copy and paste the drive, intake, shooter, and robot files into a google doc, then go to source control and delete all changes for the next person.
