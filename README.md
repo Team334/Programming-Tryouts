@@ -1,13 +1,12 @@
 # Java Programming Tryouts
 
-## TODO: Clarify wheel/drive speeds, create an empty template, create a diagram of everything, test this all in github codespaces, test this all on harry chen.
-
 ## Overview
 You are a programmer on your school's FIRST robotics team, for the CRESCENDO season. The robot has been built and it is your job to
 program an autonomous routine for it. However, before you can program the autonomous routine, you must program the individual "subsystems" (individual mechanisms) on the robot before having them work together in a full routine. The robot consists of three subsystems, the **Drive** subsystem, the **Shooter** subsystem, and the **Intake** subsystem. The **Drive** subsystem consists of two drive wheels, one on the left side of the robot and one on the right side, each powered by a single motor. The **Shooter** subsystem is a fixed-angle shooter on the front of the robot, consisting of multiple flywheels all powered by a single motor. The **Intake** subsystem is on the back of the robot, it is also fixed on the robot, and it also consists of several wheels that feed the game piece into the shooter, all powered by a single motor. Your goal is to program the autonomous routine described below for the robot.
 
 ## Autonomous Routine
 The robot is placed directly in front of the goal, pre-loaded with the game piece. The front (where the shooter is) is facing the goal. The autonoumous routine is as follows:
+- ***(note!: all drivetrain movements are at max speed, translation is at max speed, and so is rotation)***
 - The robot shoots the piece into the goal for 3 seconds.
 - The robot drives backwards 5 meters to a game piece.
 - The robot intakes the game piece for 2 seconds.
@@ -15,12 +14,11 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 - The robot drives backwards 5 meters, turns clockwise 90 degrees, and then drives 2 meters backwards to another game piece.
 - The robot intakes the game piece for 2 seconds, and now it's ready for the teleoperated period.
 - The autonomous routine is now complete.
-- (note: all drivetrain movements are at max speed, driving is at max speed, and so is rotation)
 
 ![Alt text](Diagram.png "Diagram")
 
 ## What You Are Given
-- A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is spinning at its maximum speed. ***scroll below to see function documentation on the Motor class***
+- A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is *spinning at its maximum speed*. ***scroll below to see function documentation on the Motor class***
 - A **Util** class containing many utility functions. The most important ones **toDriveSpeeds()** and **toWheelSpeeds()**, which you'll have to use to control the drivetrain. ***scroll below to see function documentation on the Util class***
 - Existing **Drive**, **Shooter**, and **Intake** classes that you will fill with code. ***see programming section below for more info***
 
@@ -29,7 +27,7 @@ The robot is placed directly in front of the goal, pre-loaded with the game piec
 
 ## `public void setPower(double power)`
 
-Sets the power of the motor [-1, +1].
+Sets the power of the motor [-1, +1]. +/- 1 is full power, spinning the motor at max speed forwards/backwards. 
 
 <br>
 
@@ -90,6 +88,28 @@ The speed of the left wheel in meters per second.
 ## `public final double rightMetersPerSecond`
 
 The speed of the right wheel in meters per second.
+
+<br>
+
+## Constants Class
+
+## `public static final double trackWidthMeters = 1`
+
+The track width between the left and right wheels in meters.
+
+## `public static final double maxWheelSpeedMetersPerSecond = Motor.MAX_SPEED * wheelCirumferenceMeters`
+
+The maximum wheel/drivetrain speed in meters per second.
+
+## `public static final double maxTranslationMetersPerSecond = maxWheelSpeedMetersPerSecond`
+
+The maximum translation speed in meters per second of the drivetrain.
+
+## `public static final double maxOmegaDegreesPerSecond = 1080`
+
+The maximum rotational speed in degrees per second of the drivetrain.
+
+## Any built-in Java libraries / functions can be used (you'll likely need to use Math.abs() and Math.signum())
 
 ## Programming
 - The **Drive** subsystem is its own class, with template methods you must code in.
