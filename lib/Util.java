@@ -1,43 +1,6 @@
 package lib;
 
 public class Util {
-    /**
-     * Represents the speeds for a tank drivetrain.
-     */
-    public static class DriveSpeeds {
-        /** Translational speed in meters per second. */
-        public final double translationMetersPerSecond;
-
-        /** Rotational speed in degrees per second (positive is clockwise, negative is counter-clockwise). */
-        public final double omegaDegreesPerSecond;
-
-        public DriveSpeeds(
-            double translationMetersPerSecond,
-            double omegaDegreesPerSecond
-        ) {
-            this.translationMetersPerSecond = translationMetersPerSecond;
-            this.omegaDegreesPerSecond = omegaDegreesPerSecond;
-        }
-    }
-
-    /**
-     * Represents the individual wheel speeds for a tank drivetrain.
-     */
-    public static class WheelSpeeds {
-        /** The speed of the left wheel in meters per second. */
-        public final double leftMetersPerSecond;
-
-        /** The speed of the right wheel in meters per second. */
-        public final double rightMetersPerSecond;
-
-        public WheelSpeeds(
-            double leftMetersPerSecond,
-            double rightMetersPerSecond
-        ) {
-            this.leftMetersPerSecond = leftMetersPerSecond;
-            this.rightMetersPerSecond = rightMetersPerSecond;
-        }
-    }
 
     public static double degToRad(double deg) {
         return deg * (Math.PI / 180);
@@ -69,41 +32,7 @@ public class Util {
         return Math.max(Math.min(min, input), max);
     }
 
-    /**
-     * Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds.
-     * 
-     * @param driveSpeeds The desired drive speeds.
-     * @param trackWidth The track width between the left and right wheels.
-     * 
-     * @return A new {@link WheelSpeeds} object.
-     */
-    public static WheelSpeeds toWheelSpeeds(
-        DriveSpeeds driveSpeeds,
-        double trackWidth
-    ) {
-        double omegaRadiansPerSecond = degToRad(driveSpeeds.omegaDegreesPerSecond);
-
-        return new WheelSpeeds(
-            driveSpeeds.translationMetersPerSecond - trackWidth / 2 * omegaRadiansPerSecond,
-            driveSpeeds.translationMetersPerSecond + trackWidth / 2 * omegaRadiansPerSecond
-        );
-    }
-
-    /** 
-     * Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds.
-     * 
-     * @param wheelSpeeds The current wheel speeds on the drivetrain.
-     * @param trackWidth The track width between the left and right wheels.
-     * 
-     * @return A new {@link DriveSpeeds} object. 
-     */
-    public static DriveSpeeds toDriveSpeeds(
-        WheelSpeeds wheelSpeeds,
-        double trackWidth
-    ) {
-        return new DriveSpeeds(
-            (wheelSpeeds.leftMetersPerSecond + wheelSpeeds.rightMetersPerSecond) / 2,
-            radToDeg((wheelSpeeds.rightMetersPerSecond - wheelSpeeds.leftMetersPerSecond) / trackWidth)
-        );
+    public static void divider(string title) {
+        System.out.println("==============" + title + "==============\n");
     }
 }

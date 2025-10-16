@@ -4,7 +4,11 @@ import lib.Motor;
 
 public class Intake {
     // the intake motor
-    private final Motor _intakeMotor = new Motor();
+    private final Motor _intakeMotor;
+
+    public Intake(int intakeMotorId) {
+        _intakeMotor = new Motor(intakeMotorId);
+    }
 
     /** 
      * Intakes the game piece for 2 seconds.

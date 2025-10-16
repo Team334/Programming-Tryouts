@@ -4,38 +4,44 @@ import lib.Motor;
 
 public class Drive {
     // the left and right wheel motors
-    private final Motor _leftMotor = new Motor();
-    private final Motor _rightMotor = new Motor();
+    private final Motor _blMotor;
+    private final Motor _brMotor;
+    private final Motor _frMotor;
+    private final Motor _flMotor;
 
-    /**
-     * Drive straight the specified distance in meters at MAX translational speed.
-     * 
-     * @param distance The distance to drive (5 = 5 meters forwards, -5 = 5 meters backwards).
-     */
-    public void driveDistance(double distance) {
-        System.out.println("DRIVING " + distance + " METERS");
-        
-        // SUGGESTION:
-        // find wheel speeds for max translational speed using Util.toWheelSpeeds()
-        // set motors to their calculated speeds
-        // sleep for a calculated amount of time
-        // set motors to 0 speed
-        // MAKE SURE TO UTILIZE ANY OF THE CONSTANTS / UTILITY FUNCTIONS
+    public Drive(int blMotorId, int brMotorId, int frMotorId, int flMotorId) {
+        _blMotor = new Motor(blMotorId);
+        _brMotor = new Motor(brMotorId);
+        _frMotor = new Motor(frMotorId);
+        _flMotor = new Motor(flMotorId);
     }
 
-    /** 
-     * Turns the robot the specified amount of degrees at MAX rotational speed.
-     * 
-     * @param degrees The degrees to turn (90 = 90 degrees clockwise, -90 = 90 degrees counter-clockwise).
-     */
-    public void turnDegrees(double degrees) {
-        System.out.println("TURNING " + degrees + " DEGREES");
-     
-        // SUGGESTION:
-        // find wheel speeds for max rotational speed using Util.toWheelSpeeds()
-        // set motors to their calculated speeds
-        // sleep for a calculated amount of time
-        // set motors to 0 speed
-        // MAKE SURE TO UTILIZE ANY OF THE CONSTANTS / UTILITY FUNCTIONS
+    public static double drive(
+        double flSpeed, double frSpeed, 
+        double blSpeed, double brSpeed, 
+        double wheelCircumference, double seconds
+    ) {
+        // Code here 
+        return ;
     }
+
+    public static double rotate(
+        double flSpeed, double frSpeed,
+        double blSpeed, double brSpeed,
+        doube trackWidthMeters, double wheelCircumference, 
+        double seconds
+    ) {
+        // Code here
+        return ;
+    }
+
+    public static double toSecondsForRotation(
+        double angleDeg, double flSpeed, double frSpeed, 
+        double blSpeed, double brSpeed, double wheelCircumference, 
+        double trackWidth
+    ) {
+      // code here
+      return ;
+  }
+
 }
