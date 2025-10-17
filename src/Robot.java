@@ -4,44 +4,50 @@ import src.subsystems.Drive;
 import src.subsystems.Intake;
 import src.subsystems.Shooter;
 
+/**
+ * Main robot class that coordinates all subsystems and executes the autonomous routine.
+ */
 class Robot {
-  // instances of each subsystem
-  private final Drive _drive = new Drive();
-  private final Shooter _shooter = new Shooter();
-  private final Intake _intake = new Intake();
+  // TODO: Initialize subsystems with motor IDs from Constants
+  private final Drive _drive = new Drive(...); // Pass 4 motor IDs (BL, BR, FR, FL)
+  private final Shooter _shooter = new Shooter(...); // Pass 2 motor IDs (left, right)
+  private final Intake _intake = new Intake(...); // Pass 1 motor ID
 
   /**
-   * Code to run during autonomous. Starting on red alliance
-   * The robot always starts facing right or left depending on the alliance color (right is blue, left is red)
-   * Note: Robot should never go past 8m in horizontal distance from the center of the field or 4.5m vertical distance from the center of the field.
+   * Autonomous routine executed during the first 15 seconds of the match.
+   * Robot starts at alliance starting zone facing toward/away from center.
+   * 
+   * Field Constraints:
+   * - Horizontal: -8m to +8m from center
+   * - Vertical: -4.5m to +4.5m from center
+   * - Starting position: ±1.0m based on alliance color
    */
   private void autonomous() {
-    // write your autonomous routine here, 
-    // it doesn't have to be the same steps below:
+    // TODO: Implement your autonomous routine
+    // Hint: Track your position as you move to stay within bounds
+    // Hint: Use Util.divider() to make output readable
 
-    // SHOOT CALL
+    // TODO: Drive forward 1 meter
+ 
+    // TODO: Run intake to collect game piece
 
-    // DRIVE DISTANCE CALL (2 meters foward) 
+    // TODO: Drive backwards 3 meters
 
-    // INTAKE CALL
+    // TODO: Shoot the game piece
 
-    // DRIVE DISTANCE CALL (3 meters forward)
+    // TODO: Drive forward 2 meters
 
-    // SHOOT CALL
+    // TODO: Turn 90 degrees clockwise
 
-    // DRIVE DISTANCE CALL (4 meters backwards)
+    // TODO: Drive forward 2 meters
 
-    // TURN DEGREES CALL (90 degrees clockwise)
-
-    // DRIVE DISTANCE CALL (2 meters backwards)
-
-    // INTAKE CALL
-
-    // Print current position or displacement from the origin (center of the field)
+    // TODO: Print current position from origin as a point (x, y)
 
   }
 
-
+  /**
+   * Program entry point.
+   */
   public static void main(String[] args) {
     Robot robot = new Robot();
     

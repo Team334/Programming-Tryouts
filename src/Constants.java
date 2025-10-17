@@ -2,39 +2,53 @@ package src;
 
 import lib.Motor;
 
+/**
+ * Contains all robot constants including motor IDs and physical measurements.
+ * Motor IDs must be unique values from 1-13.
+ */
 public class Constants {
-    /** The track width between the left and right wheels in meters. */
-    // Steer is for rotating, drive is driving straight. IF YOU CONSIDERING STEER MOTORS, Please consult an interviewer before you do!!!
-    // BL, BR, FL, FR is back left, back right, front left and front right respectively. 
-    // You can decide which motor ids to use from 1-13.
+    // TODO: Assign unique motor IDs from 1-13 for each motor
+    // BL = Back Left, BR = Back Right, FL = Front Left, FR = Front Right
+    
+    /** Motor ID for back-left drive motor */
     public static final int driveBLMotor = ;
-    // steerBLMotor = ;
+    // Optional: steerBLMotor = ; (only for swerve - consult interviewer)
 
+    /** Motor ID for back-right drive motor */
     public static final int driveBRMotor = ;
-    // steerBRMotor = ;
+    // Optional: steerBRMotor = ; (only for swerve - consult interviewer)
 
+    /** Motor ID for front-left drive motor */
     public static final int driveFLMotor = ;
-    // steerFLMotor = ;
+    // Optional: steerFLMotor = ; (only for swerve - consult interviewer)
  
+    /** Motor ID for front-right drive motor */
     public static final int driveFRMotor = ;
-    // steerFRMotor = ;
+    // Optional: steerFRMotor = ; (only for swerve - consult interviewer)
 
+    /** Motor ID for intake mechanism */
     public static final int intakeMotor = ;
+    
+    /** Motor ID for left shooter flywheel */
     public static final int shooterLeftMotor = ;
+    
+    /** Motor ID for right shooter flywheel */
     public static final int shooterRightMotor = ;
 
-    // You decide which alliance color. Default is blue
+    // ========== ALLIANCE SETTINGS ==========
+    /** Alliance color - determines starting position ("blue" or "red") */
     public static final string allianceColor = "blue";
 
-    // Starting place is the distance (1m) from the center of the field to the black solid line 
+    /** Starting position distance from field center in meters */
     public static final string startingZone = startingZone = allianceColor.equals("blue") ? 1.0 : -1.0;
 
-    // The tracks are like the treads of the tires
+    // ========== PHYSICAL MEASUREMENTS ==========
+    /** Distance between left and right wheel tracks in meters */
     public static final double trackWidthMeters = 1;
 
-    // Total distance traveled in 1 rotation of the wheel
+    /** Distance traveled per wheel rotation in meters (2πr where r = 0.05m) */
     public static final double wheelCircumference = Math.PI * 2 * 0.05;
 
-    // Max rotation per second the motor can go (1800 rpm)
+    /** Maximum motor speed in rotations per second (1800 RPM = 30 RPS) */
     public static final double motorMaxSpeed = 30;
 }

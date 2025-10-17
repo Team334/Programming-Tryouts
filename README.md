@@ -1,122 +1,204 @@
-# Java Programming Tryouts
+# Programming Tryouts - Reefscape Robot Challenge
 
 ## Overview
-You are a programmer on your school's FIRST robotics team, for the CRESCENDO season. The robot has been built and it is your job to
-program an autonomous routine for it. However, before you can program the autonomous routine, you must program the individual "subsystems" (individual mechanisms) on the robot before having them work together in a full routine. The robot consists of three subsystems, the **Drive** subsystem, the **Shooter** subsystem, and the **Intake** subsystem. The **Drive** subsystem consists of two drive wheels, one on the left side of the robot and one on the right side, each powered by a single motor. The **Shooter** subsystem is a fixed-angle shooter on the front of the robot, consisting of multiple flywheels all powered by a single motor. The **Intake** subsystem is on the back of the robot, it is also fixed on the robot, and it also consists of several wheels that feed the game piece into the shooter, all powered by a single motor. Your goal is to program the autonomous routine described below for the robot.
+The programming tryouts involve coding an autonomous period for a hypothetical Reefscape robot. You will be programming the subsystems and autonomous routine for a robot that must navigate the field, intake game pieces, and shoot them into the Reef.
 
-## Autonomous Routine
-The robot is placed directly in front of the goal, pre-loaded with the game piece. The front (where the shooter is) is facing the goal. The autonoumous routine is as follows:
-- ***(note!: all drivetrain movements are at max speed, translation is at max speed, and so is rotation)***
-- The robot shoots the piece into the goal for 3 seconds.
-- The robot drives backwards 5 meters to a game piece.
-- The robot intakes the game piece for 2 seconds.
-- The robot drives forwards 5 meters back to the goal, and shoots the game piece for 3 seconds.
-- The robot drives backwards 5 meters, turns clockwise 90 degrees, and then drives 2 meters backwards to another game piece.
-- The robot intakes the game piece for 2 seconds, and now it's ready for the teleoperated period.
-- The autonomous routine is now complete.
+![Diagram](./Diagram.png)
 
-![Alt text](Diagram.png "Diagram")
+## Time Limit
+**40 minutes** to code and debug your solution.
 
-## What You Are Given
-- A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is *spinning at its maximum speed*. ***scroll below to see function documentation on the Motor class***
-- A **Util** class containing many utility functions. The most important ones **toDriveSpeeds()** and **toWheelSpeeds()**, which you'll have to use to control the drivetrain. ***scroll below to see function documentation on the Util class***
-- Existing **Drive**, **Shooter**, and **Intake** classes that you will fill with code. ***see programming section below for more info***
+## The Challenge
+The mechanical team has finished building the robot, and you need to program it. The robot has motors with IDs from 1-13. Your robot must:
+- Move a set distance using the motors and constants provided
+- Intake game pieces from the field
+- Shoot game pieces into the Reef
 
-## Class Documentation
-## Motor Class *(these are the most important functions, however there are more in lib/Motor.java)*
+### Match Format
+- **Total Time:** 2 minutes and 15 seconds
+- **Autonomous Period:** First 15 seconds (no manual control, pre-programmed movements only)
+- **Teleoperated Period:** Remaining 2 minutes (manual control to score points)
 
-## `public void setPower(double power)`
+## Field Layout
+The field has a center origin (0, 0) with:
+- **Horizontal boundaries:** ±8 meters from center
+- **Vertical boundaries:** ±4.5 meters from center
+- **Starting zones:** Blue alliance starts at +1.0m, Red alliance starts at -1.0m from center
+- **Reef:** The scoring zone where you shoot game pieces
 
-Sets the power of the motor [-1, +1]. +/- 1 is full power, spinning the motor at max speed forwards/backwards. 
+## Robot Specifications
 
-<br>
+### Subsystems
+1. **Drive** - Four-wheel drive system (front-left, front-right, back-left, back-right)
+2. **Intake** - Mechanism to pick up game pieces (range: 0.8m)
+3. **Shooter** - Dual-motor shooter (range: 1m)
 
-## Util Class *(these are the most important functions, however there are more in lib/Util.java)*
+### Constraints
+- Maximum of 13 motors
+- Maximum 3 motors per drive module
+- Robot must stay within field boundaries
+- Cannot enter the Reef structure
+- Must start in designated alliance zone (blue or red)
 
-## `public static void sleep(double seconds)`
+## Autonomous Routine Example
+Your autonomous routine should accomplish tasks like:
+1. Drive forward 1 meter
+2. Intake a game piece
+3. Drive backwards 3 meters
+4. Shoot the game piece
+5. Drive forward 2 meters
+6. Turn 90 degrees clockwise
+7. Drive forward 2 meters
+8. Report current position from origin
 
-Pause execution for some amount of time.
+## Files You'll Work With
 
- * **Parameters:** `seconds` — The seconds to sleep for.
+### Library Files (lib/)
+1. **Motor.java** - Provides motor control functionality (mostly complete)
+2. **Util.java** - Utility functions including sleep, clamp, angle conversion, and the divider function
 
-## `public static WheelSpeeds toWheelSpeeds( DriveSpeeds driveSpeeds, double trackWidth )`
+### Source Files (src/)
+1. **Constants.java** - Motor IDs and robot physical constants (you need to assign motor IDs)
+2. **Robot.java** - Main robot class (implement autonomous routine)
+3. **subsystems/Drive.java** - Drive subsystem (implement movement methods)
+4. **subsystems/Intake.java** - Intake subsystem (implement intake logic)
+5. **subsystems/Shooter.java** - Shooter subsystem (implement shooting logic)
 
-Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds. This'll take speeds meant for the 
-whole drive train and convert them into the speeds for each individual wheel.
+### What You Need to Do
+- Assign motor IDs in `Constants.java` (1-13)
+- Implement methods in `Util.java` for distance and rotation calculations
+- Complete the `Drive`, `Intake`, and `Shooter` subsystem classes
+- Write the autonomous routine in `Robot.java`
 
- * **Parameters:**
-   * `driveSpeeds` — The desired drive speeds.
-   * `trackWidth` — The track width between the left and right wheels.
+## API Documentation
 
-     <p>
- * **Returns:** A new {@link WheelSpeeds} object.
+### Motor Class (`lib/Motor.java`)
 
-## `public static DriveSpeeds toDriveSpeeds( WheelSpeeds wheelSpeeds, double trackWidth )`
+#### `public void setPower(double power)`
+Sets the power of the motor.
+- **Parameters:** `power` - Value between [-1, 1] where -1 is full reverse, 0 is stopped, 1 is full forward
+- **Returns:** None
 
-Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds. This'll take the speeds of
-each individual wheel and convert it into speeds of the whole drive train.
+#### `public double getSpeed()`
+Returns the current speed of the motor.
+- **Returns:** Speed in rotations per second (e.g., 30 rps × 0.8 power = 24 rps)
 
- * **Parameters:**
-   * `wheelSpeeds` — The current wheel speeds on the drivetrain.
-   * `trackWidth` — The track width between the left and right wheels.
+### Util Class (`lib/Util.java`)
 
-     <p>
- * **Returns:** A new {@link DriveSpeeds} object.
+#### `public static void sleep(double seconds)`
+Pause execution for a specified amount of time.
+- **Parameters:** `seconds` - The duration to sleep (clamped between 1-135 seconds)
+- **Returns:** None
 
-<br>
+#### `public static double clamp(double value, double min, double max)`
+Clamps a value between minimum and maximum bounds.
+- **Parameters:** 
+  - `value` - The input value
+  - `min` - Minimum allowed value
+  - `max` - Maximum allowed value
+- **Returns:** Clamped value
 
-## DriveSpeeds Class
+#### `public static double degToRad(double deg)`
+Converts degrees to radians.
+- **Parameters:** `deg` - Angle in degrees
+- **Returns:** Angle in radians
 
-Purpose: Represents the speeds for a tank drivetrain.
+#### `public static double radToDeg(double rad)`
+Converts radians to degrees.
+- **Parameters:** `rad` - Angle in radians
+- **Returns:** Angle in degrees
 
-## `public final double translationMetersPerSecond`
+#### `public static void divider(String title)`
+Prints a formatted divider line with a title.
+- **Parameters:** `title` - Text to display in the divider
+- **Returns:** None
 
-Translational speed in meters per second.
+#### `public static double toSecondsForDistance(...)` *(YOU IMPLEMENT)*
+Calculates time needed to travel a distance.
+- **Returns:** Seconds required for the desired distance
 
-## `public final double omegaDegreesPerSecond`
+#### `public static double drive(...)` *(YOU IMPLEMENT)*
+Calculates distance traveled given wheel speeds and time.
+- **Returns:** Distance traveled in meters
 
-Rotational speed in degrees per second (positive is clockwise, negative is counter-clockwise).
+#### `public static double toSecondsForRotation(...)` *(YOU IMPLEMENT)*
+Calculates time needed to rotate a specific angle.
+- **Returns:** Seconds required for the desired rotation
 
-## WheelSpeeds Class
+#### `public static double rotate(...)` *(YOU IMPLEMENT)*
+Calculates rotation angle given wheel speeds and time.
+- **Returns:** Degrees rotated
 
-Purpose: Represents the individual wheel speeds for a tank drivetrain.
+### Constants Class (`src/Constants.java`)
 
-## `public final double leftMetersPerSecond`
+#### Motor IDs (you assign these from 1-13)
+- `driveBLMotor`, `driveBRMotor`, `driveFLMotor`, `driveFRMotor` - Drive motors
+- `intakeMotor` - Intake motor
+- `shooterLeftMotor`, `shooterRightMotor` - Shooter motors
 
-The speed of the left wheel in meters per second.
+#### Physical Constants
+- `trackWidthMeters = 1` - Distance between left and right wheels
+- `wheelCircumference = π × 2 × 0.05` - Distance per wheel rotation
+- `motorMaxSpeed = 30` - Maximum rotations per second
+- `allianceColor` - "blue" or "red" (determines starting position)
 
-## `public final double rightMetersPerSecond`
+## Implementation Tips
 
-The speed of the right wheel in meters per second.
+### For Drive Subsystem
+- Think about how wheel speeds relate to robot movement
+- Average left and right sides separately
+- Consider how differential speeds create rotation
 
-<br>
+### For Intake/Shooter Subsystems
+- Use motor power control (setPower)
+- Use Util.sleep() for timed operations
+- Remember to turn motors off after operations
 
-## Constants Class
+### For Autonomous Routine
+- Call subsystem methods in sequence
+- Track robot position as you move
+- Use Util.divider() to make output readable
 
-## `public static final double trackWidthMeters = 1`
+## Java Utilities You Can Use
+Any built-in Java libraries are allowed, including:
+- `Math.abs()` - Absolute value
+- `Math.signum()` - Sign of a number
+- `Math.toRadians()` / `Math.toDegrees()` or `Util.degToRad` / `Util.radToDeg` - Angle conversion
+- `System.out.println()` - Printing output
 
-The track width between the left and right wheels in meters.
+## Getting Started
 
-## `public static final double maxWheelSpeedMetersPerSecond = Motor.MAX_SPEED * wheelCirumferenceMeters`
+### Step 1: Assign Motor IDs
+Open `src/Constants.java` and assign motor IDs (1-13) to each motor constant.
 
-The maximum wheel/drivetrain speed in meters per second.
+### Step 2: Implement Util Helper Methods
+Open `lib/Util.java` and implement the methods marked for you to complete.
 
-## `public static final double maxTranslationMetersPerSecond = maxWheelSpeedMetersPerSecond`
+### Step 3: Complete Drive Subsystem
+Open `src/subsystems/Drive.java` and implement the movement calculation methods.
 
-The maximum translation speed in meters per second of the drivetrain.
+### Step 4: Complete Intake Subsystem
+Open `src/subsystems/Intake.java` and implement the intake logic.
 
-## `public static final double maxOmegaDegreesPerSecond = 1080`
+### Step 5: Complete Shooter Subsystem
+Open `src/subsystems/Shooter.java` and implement the shooting logic.
 
-The maximum rotational speed in degrees per second of the drivetrain.
+### Step 6: Write Autonomous Routine
+Open `src/Robot.java` and write your autonomous routine using the subsystems.
 
-## Any built-in Java libraries / functions can be used (you'll likely need to use Math.abs() and Math.signum())
+## Testing Your Code
+Run your program and verify:
+- Motors are assigned valid IDs
+- Robot movements produce correct output
+- Position tracking is accurate
+- Robot stays within field boundaries
 
-## Programming
-- The **Drive** subsystem is its own class, with template methods you must code in.
-- The **Shooter** subsystem is its own class, with template methods you must code in.
-- The **Intake** subsystem is its own class, with template methods you must code in.
-- Each subsystem class is be defined in the **subsystems** folder.
-- Each subsystem should be instantiated in the **Robot** class, and the autonomous routine must be programmed in the **autonomous()**
-function of the robot class.
+## Optional Advanced Features
+If you finish early, consider implementing:
+- **Swerve Drive** - Individual wheel rotation control (consult interviewer first)
+- **Extendable Intake** - Two-motor intake system
+- **Elevator Shooter** - Variable height shooting
+- **LED Subsystem** - Visual feedback system
 
-## **Good Luck! (NOTE: you may look up anything you need, just don't copy code directly without understanding)**
+## **Good Luck!**
+**Remember:** You may look up Java syntax and documentation, but understand what you're writing. Ask interviewers if you need clarification on the robot specifications or constraints.
