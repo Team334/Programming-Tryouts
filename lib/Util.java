@@ -1,11 +1,9 @@
 package lib;
 
 /**
- * Utility class containing helper functions for robot operations.
- * Includes timing, angle conversion, clamping, and formatting utilities.
+ * Utility class containing helper functions.
  */
 public class Util {
-
     /**
      * Converts degrees to radians.
      * 
@@ -37,7 +35,7 @@ public class Util {
         } 
         
         catch (InterruptedException e) {
-            System.out.println("UNEXPECTED EXCEPTION");
+            System.out.println("sleep did not work");
         }
     }
 
@@ -47,19 +45,10 @@ public class Util {
      * @param input The value to clamp
      * @param min The minimum allowed value
      * @param max The maximum allowed value
+     * 
      * @return The clamped value
      */
     public static double clamp(double input, double min, double max) {
         return Math.max(Math.min(min, input), max);
-    }
-
-    /**
-     * Prints a formatted divider line with a title.
-     * Useful for separating output sections during testing.
-     * 
-     * @param title The text to display in the divider
-     */
-    public static void divider(string title) {
-        System.out.println("==============" + title + "==============\n");
     }
 }

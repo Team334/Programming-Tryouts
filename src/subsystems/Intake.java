@@ -1,24 +1,18 @@
 package src.subsystems;
 
 import lib.Motor;
-import lib.Util;
 
 /**
- * Intake subsystem for collecting game pieces from the field.
- * Can intake objects up to 0.8 meters away.
+ * Intake subsystem.
  */
 public class Intake {
-    // Single motor controls intake wheels
-    private final Motor _intakeMotor;
+    // Single motor controls intake feeder wheels
+    private final Motor _intakeMotor = new Motor();
 
     /**
      * Creates a new Intake subsystem.
-     * 
-     * @param intakeMotorId Motor ID for the intake mechanism
      */
-    public Intake(int intakeMotorId) {
-        _intakeMotor = new Motor(intakeMotorId);
-    }
+    public Intake() {}
 
     /** 
      * Runs the intake mechanism to collect a game piece.
@@ -27,9 +21,10 @@ public class Intake {
     public void intake() {
         System.out.println("INTAKING");
 
-        // TODO: Implement intake sequence
-        // Hint: Set motor power to 1.0 or -1.0 depending on intake direction
-        // Hint: Use Util.sleep() to run for the required duration
-        // Hint: Stop the motor when done (power = 0)
+        // TODO
+
+        // Set motor to max power
+        // Use Util.sleep() to run for the required duration
+        // Stop motor when done
     }
 }

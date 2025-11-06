@@ -1,121 +1,71 @@
 package src.subsystems;
 
+import lib.FieldPosition;
 import lib.Motor;
+import lib.VisionSystem;
+import src.Constants;
 
 /**
- * Drive subsystem controlling the four-wheel drive system.
- * Handles both straight-line movement and rotation.
+ * Drive subsystem.
  */
 public class Drive {
     // Four drive motors for independent wheel control
-    private final Motor _blMotor;
-    private final Motor _brMotor;
-    private final Motor _frMotor;
-    private final Motor _flMotor;
+    private final Motor _flMotor = new Motor();
+    private final Motor _frMotor = new Motor();
+    private final Motor _brMotor = new Motor();
+    private final Motor _blMotor = new Motor();
+
+    private final VisionSystem _visionSystem = new VisionSystem();
+
+    private FieldPosition _latestPosition = new FieldPosition();
 
     /**
-     * Creates a new Drive subsystem with four motors.
-     * 
-     * @param blMotorId Motor ID for back-left wheel
-     * @param brMotorId Motor ID for back-right wheel
-     * @param frMotorId Motor ID for front-right wheel
-     * @param flMotorId Motor ID for front-left wheel
+     * Creates a new Drive subsystem.
      */
-    public Drive(int blMotorId, int brMotorId, int frMotorId, int flMotorId) {
-        _blMotor = new Motor(blMotorId);
-        _brMotor = new Motor(brMotorId);
-        _frMotor = new Motor(frMotorId);
-        _flMotor = new Motor(flMotorId);
+    public Drive() {}
+
+    /**
+     * Drives to the position (as returned by the vision system) of a game piece.
+     */
+    public void driveToGamePiecePosition() {
+        System.out.println("DRIVING TO GAME PIECE POSITION");
+
+        FieldPosition gamePiecePosition = _visionSystem.getGamePiecePosition();
+
+        driveToPosition(gamePiecePosition);
     }
 
     /**
-     * Calculates the time required to travel a specific distance.
-     * 
-     * @param distance Target distance in meters
-     * @param flSpeed Front-left wheel speed in RPS
-     * @param frSpeed Front-right wheel speed in RPS
-     * @param blSpeed Back-left wheel speed in RPS
-     * @param brSpeed Back-right wheel speed in RPS
-     * @param wheelCircumference Distance per wheel rotation in meters
-     * @return Time in seconds needed to travel the distance
+     * Drives to the position of the scoring location.
      */
-    public static double toSecondsForDistance(double distance, 
-        double flSpeed, double frSpeed, 
-        double blSpeed, double brSpeed, 
-        double wheelCircumference
-    ) {    
-        // TODO: Calculate average speed and convert distance to time
-        // Hint: Average left side, average right side, then average both
-        // Hint: Convert RPS to meters/second using wheelCircumference
-        return ;
+    public void driveToScoringPosition() {
+        System.out.println("DRIVING TO SCORING POSITION");
+
+        driveToPosition(Constants.scoringPosition);
     }
 
     /**
-     * Calculates the distance traveled given wheel speeds and elapsed time.
+     * Drives to the given position.
      * 
-     * @param flSpeed Front-left wheel speed in RPS
-     * @param frSpeed Front-right wheel speed in RPS
-     * @param blSpeed Back-left wheel speed in RPS
-     * @param brSpeed Back-right wheel speed in RPS
-     * @param wheelCircumference Distance per wheel rotation in meters
-     * @param seconds Time elapsed in seconds
-     * @return Distance traveled in meters
+     * First, the chassis rotates to face the position, then it drive to it, and then it rotates again to the position's heading.
      */
-    public static double drive(
-        double flSpeed, double frSpeed, 
-        double blSpeed, double brSpeed, 
-        double wheelCircumference, double seconds
-    ) {
-        // TODO: Calculate average speed and multiply by time
-        // Hint: Similar to toSecondsForDistance but solve for distance
-        return ;
+    private void driveToPosition(FieldPosition position) {
+        // TODO
+
+        _latestPosition = position;
     }
 
     /**
-     * Calculates the rotation angle achieved given wheel speeds and elapsed time.
-     * 
-     * @param flSpeed Front-left wheel speed in RPS
-     * @param frSpeed Front-right wheel speed in RPS
-     * @param blSpeed Back-left wheel speed in RPS
-     * @param brSpeed Back-right wheel speed in RPS
-     * @param trackWidthMeters Distance between left and right wheels
-     * @param wheelCircumference Distance per wheel rotation in meters
-     * @param seconds Time elapsed in seconds
-     * @return Degrees rotated (positive = clockwise)
+     * Rotates the chassis by the given degrees.
      */
-    public static double rotate(
-        double flSpeed, double frSpeed,
-        double blSpeed, double brSpeed,
-        doube trackWidthMeters, double wheelCircumference, 
-        double seconds
-    ) {
-        // TODO: Calculate arc length difference between sides, then convert to angle
-        // Hint: Left and right sides move in opposite directions during rotation
-        // Hint: Use Util.radToDeg() to convert result
-        return ;
+    private void rotateDegrees(double degreesToRotate) {
+        // TODO
     }
 
     /**
-     * Calculates the time required to rotate a specific angle.
-     * 
-     * @param angleDeg Target rotation angle in degrees (positive = clockwise)
-     * @param flSpeed Front-left wheel speed in RPS
-     * @param frSpeed Front-right wheel speed in RPS
-     * @param blSpeed Back-left wheel speed in RPS
-     * @param brSpeed Back-right wheel speed in RPS
-     * @param wheelCircumference Distance per wheel rotation in meters
-     * @param trackWidth Distance between left and right wheels
-     * @return Time in seconds needed to complete the rotation
+     * Drives forwards at max speed by the given meters.
      */
-    public static double toSecondsForRotation(
-        double angleDeg, double flSpeed, double frSpeed, 
-        double blSpeed, double brSpeed, double wheelCircumference, 
-        double trackWidth
-    ) {
-      // TODO: Convert angle to arc length, then calculate time
-      // Hint: Use Util.degToRad() to convert degrees
-      // Hint: Arc length = angle (radians) × radius
-      return ;
-  }
-
+    private void driveMeters(double metersToDrive) {
+        // TODO 
+    }
 }
