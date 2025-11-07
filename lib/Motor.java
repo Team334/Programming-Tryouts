@@ -6,7 +6,7 @@ package lib;
 public class Motor {
     private double _power;
 
-    private static final double maxSpeedRPS = 30;
+    public static final double maxSpeedRPS = 30;
 
     /**
      * Creates a new Motor.
