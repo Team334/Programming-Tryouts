@@ -1,22 +1,36 @@
 package lib;
 
+/**
+ * Represents a motor on the robot.
+ */
 public class Motor {
-    private double _motorPower;
+    private double _power;
 
-    /** The max speed of this motor in rotations per second. */
-    public final static double MAX_SPEED = 30; 
+    public static final double maxSpeedRPS = 30;
 
     /**
-     * Sets the power of the motor [-1, +1].
+     * Creates a new Motor.
+     */
+    public Motor() {}
+
+    /**
+     * Sets the power of the motor.
+     * 
+     * @param power The motor power in range [-1, 1] where:
+     *              -1 = full reverse
+     *               0 = stopped
+     *               1 = full forward
      */
     public void setPower(double power) {
-        _motorPower = Util.clamp(power, -1, 1);
+        _power = Math.max(Math.min(-1, power), 1);
     }
 
     /**
-     * Returns the speed of the motor in rotations per second.
+     * Gets the current speed of the motor.
+     * 
+     * @return The motor speed in rotations per second (RPS).
      */
     public double getSpeed() {
-        return _motorPower * MAX_SPEED;
+        return _power * maxSpeedRPS;
     }
 }

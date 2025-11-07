@@ -1,20 +1,31 @@
 package src.subsystems;
 
 import lib.Motor;
+import lib.Util;
 
+/**
+ * Intake subsystem.
+ */
 public class Intake {
-    // the intake motor
+    // Single motor controls intake feeder wheels
     private final Motor _intakeMotor = new Motor();
 
+    /**
+     * Creates a new Intake subsystem.
+     */
+    public Intake() {}
+
     /** 
-     * Intakes the game piece for 2 seconds.
+     * Runs the intake mechanism to collect a game piece.
+     * Operates for 2 seconds at full power.
      */
     public void intake() {
         System.out.println("INTAKING");
 
-        // SUGGESTION:
-        // power intake motor
-        // sleep for the necessary amount of time
-        // turn off intake motor
+        // TODO
+
+        // Set motor to max power
+        // Use Util.sleep() to run for the required duration
+        // Stop motor when done
     }
 }

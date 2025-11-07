@@ -1,56 +1,13 @@
 package lib;
 
+/**
+ * Utility class containing helper functions.
+ */
 public class Util {
     /**
-     * Represents the speeds for a tank drivetrain.
-     */
-    public static class DriveSpeeds {
-        /** Translational speed in meters per second. */
-        public final double translationMetersPerSecond;
-
-        /** Rotational speed in degrees per second (positive is clockwise, negative is counter-clockwise). */
-        public final double omegaDegreesPerSecond;
-
-        public DriveSpeeds(
-            double translationMetersPerSecond,
-            double omegaDegreesPerSecond
-        ) {
-            this.translationMetersPerSecond = translationMetersPerSecond;
-            this.omegaDegreesPerSecond = omegaDegreesPerSecond;
-        }
-    }
-
-    /**
-     * Represents the individual wheel speeds for a tank drivetrain.
-     */
-    public static class WheelSpeeds {
-        /** The speed of the left wheel in meters per second. */
-        public final double leftMetersPerSecond;
-
-        /** The speed of the right wheel in meters per second. */
-        public final double rightMetersPerSecond;
-
-        public WheelSpeeds(
-            double leftMetersPerSecond,
-            double rightMetersPerSecond
-        ) {
-            this.leftMetersPerSecond = leftMetersPerSecond;
-            this.rightMetersPerSecond = rightMetersPerSecond;
-        }
-    }
-
-    public static double degToRad(double deg) {
-        return deg * (Math.PI / 180);
-    }
-
-    public static double radToDeg(double rad) {
-        return rad * (180 / Math.PI);
-    }
-
-    /**
-     * Pause execution for some amount of time.
+     * Pauses execution for a specified duration.
      * 
-     * @param seconds The seconds to sleep for.
+     * @param seconds The duration to sleep in seconds (will be clamped 1-135s)
      */
     public static void sleep(double seconds) {
         try {
@@ -58,52 +15,7 @@ public class Util {
         } 
         
         catch (InterruptedException e) {
-            System.out.println("UNEXPECTED EXCEPTION");
+            System.out.println("sleep did not work");
         }
-    }
-
-    /**
-     * Clamps the input value between min and max.
-     */
-    public static double clamp(double input, double min, double max) {
-        return Math.max(Math.min(min, input), max);
-    }
-
-    /**
-     * Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds.
-     * 
-     * @param driveSpeeds The desired drive speeds.
-     * @param trackWidth The track width between the left and right wheels.
-     * 
-     * @return A new {@link WheelSpeeds} object.
-     */
-    public static WheelSpeeds toWheelSpeeds(
-        DriveSpeeds driveSpeeds,
-        double trackWidth
-    ) {
-        double omegaRadiansPerSecond = degToRad(driveSpeeds.omegaDegreesPerSecond);
-
-        return new WheelSpeeds(
-            driveSpeeds.translationMetersPerSecond - trackWidth / 2 * omegaRadiansPerSecond,
-            driveSpeeds.translationMetersPerSecond + trackWidth / 2 * omegaRadiansPerSecond
-        );
-    }
-
-    /** 
-     * Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds.
-     * 
-     * @param wheelSpeeds The current wheel speeds on the drivetrain.
-     * @param trackWidth The track width between the left and right wheels.
-     * 
-     * @return A new {@link DriveSpeeds} object. 
-     */
-    public static DriveSpeeds toDriveSpeeds(
-        WheelSpeeds wheelSpeeds,
-        double trackWidth
-    ) {
-        return new DriveSpeeds(
-            (wheelSpeeds.leftMetersPerSecond + wheelSpeeds.rightMetersPerSecond) / 2,
-            radToDeg((wheelSpeeds.rightMetersPerSecond - wheelSpeeds.leftMetersPerSecond) / trackWidth)
-        );
     }
 }

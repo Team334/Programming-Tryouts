@@ -1,20 +1,24 @@
 package src;
 
+import lib.FieldPosition;
 import lib.Motor;
 
+/**
+ * Contains all robot constants.
+ */
 public class Constants {
-    /** The track width between the left and right wheels in meters. */
-    public static final double trackWidthMeters = 1;
+    /** Distance between left and right sides of the robot. */
+    private static final double trackWidthMeters = 1;
 
-    /** The circumference of the drive wheels in meters. */
-    private static final double wheelCirumferenceMeters = Math.PI * 2 * 0.05;
+    /** Distance traveled per wheel rotation. */
+    private static final double wheelCircumference = 0.3;
 
-    /** The maximum wheel/drivetrain speed in meters per second. */
-    public static final double maxWheelSpeedMetersPerSecond = Motor.MAX_SPEED * wheelCirumferenceMeters;
+    /** Max robot linear speed in m/s. */
+    public static final double maxRobotSpeedMetersPerSecond = Motor.maxSpeedRPS * wheelCircumference;
+    
+    /** Max robot angular speed in deg/s. */
+    public static final double maxRobotAngularSpeedDegreesPerSecond = Math.toDegrees(2 * maxRobotSpeedMetersPerSecond / trackWidthMeters);
 
-    /** The maximum translation speed in meters per second of the drivetrain. */
-    public static final double maxTranslationMetersPerSecond = maxWheelSpeedMetersPerSecond;
-
-    /** The maximum rotational speed in degrees per second of the drivetrain. */
-    public static final double maxOmegaDegreesPerSecond = 1080;
+    /** The scoring position. */
+    public static final FieldPosition scoringPosition = new FieldPosition(10, 10, 10);
 }

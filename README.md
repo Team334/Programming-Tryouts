@@ -1,122 +1,127 @@
-# Java Programming Tryouts
+# The Robot
+The mechanical team just finished building the robot, and you are assigned to program an **autonomous routine** for the robot. The robot has a **Drive** subsystem, an **Intake** subsystem, and a **Shooter** subsystem that you must code along with the autonomous routine. 
 
-## Overview
-You are a programmer on your school's FIRST robotics team, for the CRESCENDO season. The robot has been built and it is your job to
-program an autonomous routine for it. However, before you can program the autonomous routine, you must program the individual "subsystems" (individual mechanisms) on the robot before having them work together in a full routine. The robot consists of three subsystems, the **Drive** subsystem, the **Shooter** subsystem, and the **Intake** subsystem. The **Drive** subsystem consists of two drive wheels, one on the left side of the robot and one on the right side, each powered by a single motor. The **Shooter** subsystem is a fixed-angle shooter on the front of the robot, consisting of multiple flywheels all powered by a single motor. The **Intake** subsystem is on the back of the robot, it is also fixed on the robot, and it also consists of several wheels that feed the game piece into the shooter, all powered by a single motor. Your goal is to program the autonomous routine described below for the robot.
+## Drive
+The Drive subsystem consists of four wheels, with each one located on a corner of the chassis and controlled by **1 motor each**. These motors are labeled “front left”, “front right”, “back left”, and “back right”, which corresponds to their location on the chassis.
 
-## Autonomous Routine
-The robot is placed directly in front of the goal, pre-loaded with the game piece. The front (where the shooter is) is facing the goal. The autonoumous routine is as follows:
-- ***(note!: all drivetrain movements are at max speed, translation is at max speed, and so is rotation)***
-- The robot shoots the piece into the goal for 3 seconds.
-- The robot drives backwards 5 meters to a game piece.
-- The robot intakes the game piece for 2 seconds.
-- The robot drives forwards 5 meters back to the goal, and shoots the game piece for 3 seconds.
-- The robot drives backwards 5 meters, turns clockwise 90 degrees, and then drives 2 meters backwards to another game piece.
-- The robot intakes the game piece for 2 seconds, and now it's ready for the teleoperated period.
-- The autonomous routine is now complete.
+![](Drive.png)
 
-![Alt text](Diagram.png "Diagram")
+## Intake
+The Intake subsystem is **located on the back of the robot**, and consists of a set of feeder wheels, all controlled by **1 motor**. When intaking, the motor should spin at full speed for 2 seconds, then stop. 
 
-## What You Are Given
-- A **Motor** class, which has a function to set its power. The power is a number ranging from [-1, 1], where -1 is full power in the reverse direction, 0 is no power, and 1 is full power in the forward direction. Full power means that the motor is *spinning at its maximum speed*. ***scroll below to see function documentation on the Motor class***
-- A **Util** class containing many utility functions. The most important ones **toDriveSpeeds()** and **toWheelSpeeds()**, which you'll have to use to control the drivetrain. ***scroll below to see function documentation on the Util class***
-- Existing **Drive**, **Shooter**, and **Intake** classes that you will fill with code. ***see programming section below for more info***
+![](Intake.png)
 
-## Class Documentation
-## Motor Class *(these are the most important functions, however there are more in lib/Motor.java)*
+## Shooter
+The Shooter subsystem is **located on the front of the robot**, and consists of a set of feeder wheels, all controlled by **1 motor**. When shooting, the motor should spin at full speed for 4 seconds, then stop.
+
+![](Shooter.png)
+
+# Autonomous Routine
+![](Field.png)
+
+You will be given 30 min to code and debug. **You must code in the functions where there is a //TODO indication**. Your objective is to code an autonomous routine that’ll pick up and score as many game pieces as possible by executing periodic “cycles” in the routine. 
+
+Each “cycle” constitutes driving to the game piece position, intaking it, driving to the scoring position, and finally shooting the game piece. When driving to a position, the chassis should first rotate to face that position, then drive to the position, and then finally rotate to that position’s heading.
+
+To code the autonomous routine, you first need to code the *Drive.java*, *Intake.java*, and *Shooter.java* subsystem files. You are also given the library files *Util.java* and *Motor.java*.
+
+# Class Documentation
+
+## `public class Motor`
+
+Represents a motor on the robot.
+
+## `public Motor()`
+
+Creates a new Motor.
 
 ## `public void setPower(double power)`
 
-Sets the power of the motor [-1, +1]. +/- 1 is full power, spinning the motor at max speed forwards/backwards. 
+Sets the power of the motor.
 
-<br>
+ * **Parameters:** `power` — The motor power in range [-1, 1] where:
 
-## Util Class *(these are the most important functions, however there are more in lib/Util.java)*
+     -1 = full reverse
+
+     0 = stopped
+
+     1 = full forward
+
+## `public double getSpeed()`
+
+Gets the current speed of the motor.
+
+ * **Returns:** The motor speed in rotations per second (RPS).
+
+## `public class FieldPosition`
+
+Represents a position on the field with x, y coordinates and heading.
+
+## `public FieldPosition(double xMeters, double yMeters, double headingDegrees)`
+
+Creates a new FieldPosition.
+
+ * **Parameters:**
+   * `xMeters` — X coordinate in meters.
+   * `yMeters` — Y coordinate in meters.
+   * `headingDegrees` — Heading in degrees.
+
+## `public FieldPosition()`
+
+Creates a new FieldPosition at the origin with 0 degrees heading.
+
+## `public double getX()`
+
+Gets the X coordinate.
+
+## `public double getY()`
+
+Gets the Y coordinate.
+
+## `public double getHeading()`
+
+Gets the heading.
+
+## `public double distanceTo(FieldPosition other)`
+
+Calculates the distance between this FieldPosition and another FieldPosition.
+
+ * **Parameters:** `other` — The other FieldPosition.
+
+     <p>
+ * **Returns:** The distance in meters.
+
+## `public double angleTo(FieldPosition other)`
+
+Calculates the angle from this FieldPosition to another FieldPosition.
+
+ * **Parameters:** `other` — The other FieldPosition.
+
+     <p>
+ * **Returns:** The angle in degrees.
+
+## `public class Util`
+
+Utility class containing helper functions.
 
 ## `public static void sleep(double seconds)`
 
-Pause execution for some amount of time.
+Pauses execution for a specified duration.
 
- * **Parameters:** `seconds` — The seconds to sleep for.
+ * **Parameters:** `seconds` — The duration to sleep in seconds (will be clamped 1-135s)
 
-## `public static WheelSpeeds toWheelSpeeds( DriveSpeeds driveSpeeds, double trackWidth )`
+## `public class Constants`
 
-Performs inverse kinematics for a tank drive, converting drive speeds to wheel speeds. This'll take speeds meant for the 
-whole drive train and convert them into the speeds for each individual wheel.
+Contains all robot constants.
 
- * **Parameters:**
-   * `driveSpeeds` — The desired drive speeds.
-   * `trackWidth` — The track width between the left and right wheels.
+## `public static final double maxRobotSpeedMetersPerSecond = Motor.maxSpeedRPS * wheelCircumference`
 
-     <p>
- * **Returns:** A new {@link WheelSpeeds} object.
+Max robot linear speed in m/s.
 
-## `public static DriveSpeeds toDriveSpeeds( WheelSpeeds wheelSpeeds, double trackWidth )`
+## `public static final double maxRobotAngularSpeedDegreesPerSecond = Math.toDegrees(2 * maxRobotSpeedMetersPerSecond`
 
-Performs forward kinematics for a tank drive, converting wheel speeds to drive speeds. This'll take the speeds of
-each individual wheel and convert it into speeds of the whole drive train.
+Max robot angular speed in deg/s.
 
- * **Parameters:**
-   * `wheelSpeeds` — The current wheel speeds on the drivetrain.
-   * `trackWidth` — The track width between the left and right wheels.
+## `public static final FieldPosition scoringPosition = new FieldPosition(10, 10, 10)`
 
-     <p>
- * **Returns:** A new {@link DriveSpeeds} object.
-
-<br>
-
-## DriveSpeeds Class
-
-Purpose: Represents the speeds for a tank drivetrain.
-
-## `public final double translationMetersPerSecond`
-
-Translational speed in meters per second.
-
-## `public final double omegaDegreesPerSecond`
-
-Rotational speed in degrees per second (positive is clockwise, negative is counter-clockwise).
-
-## WheelSpeeds Class
-
-Purpose: Represents the individual wheel speeds for a tank drivetrain.
-
-## `public final double leftMetersPerSecond`
-
-The speed of the left wheel in meters per second.
-
-## `public final double rightMetersPerSecond`
-
-The speed of the right wheel in meters per second.
-
-<br>
-
-## Constants Class
-
-## `public static final double trackWidthMeters = 1`
-
-The track width between the left and right wheels in meters.
-
-## `public static final double maxWheelSpeedMetersPerSecond = Motor.MAX_SPEED * wheelCirumferenceMeters`
-
-The maximum wheel/drivetrain speed in meters per second.
-
-## `public static final double maxTranslationMetersPerSecond = maxWheelSpeedMetersPerSecond`
-
-The maximum translation speed in meters per second of the drivetrain.
-
-## `public static final double maxOmegaDegreesPerSecond = 1080`
-
-The maximum rotational speed in degrees per second of the drivetrain.
-
-## Any built-in Java libraries / functions can be used (you'll likely need to use Math.abs() and Math.signum())
-
-## Programming
-- The **Drive** subsystem is its own class, with template methods you must code in.
-- The **Shooter** subsystem is its own class, with template methods you must code in.
-- The **Intake** subsystem is its own class, with template methods you must code in.
-- Each subsystem class is be defined in the **subsystems** folder.
-- Each subsystem should be instantiated in the **Robot** class, and the autonomous routine must be programmed in the **autonomous()**
-function of the robot class.
-
-## **Good Luck! (NOTE: you may look up anything you need, just don't copy code directly without understanding)**
+The scoring position.
