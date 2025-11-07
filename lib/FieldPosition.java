@@ -1,28 +1,49 @@
 package lib;
 
+/**
+ * Represents a position on the field with x, y coordinates and heading.
+ */
 public class FieldPosition {
     private final double _xMeters;
     private final double _yMeters;
     private final double _headingDegrees;
 
+    /**
+     * Creates a new FieldPosition.
+     * @param xMeters X coordinate in meters.
+     * @param yMeters Y coordinate in meters.
+     * @param headingDegrees Heading in degrees.
+     */
     public FieldPosition(double xMeters, double yMeters, double headingDegrees) {
         _xMeters = xMeters;
         _yMeters = yMeters;
         _headingDegrees = headingDegrees;
     }
 
+    /**
+     * Creates a new FieldPosition at the origin with 0 degrees heading.
+     */
     public FieldPosition() {
         this(0, 0, 0);
     }
 
+    /**
+     * Gets the X coordinate.
+     */
     public double getX() {
         return _xMeters;
     }
 
+    /**
+     * Gets the Y coordinate.
+     */
     public double getY() {
         return _yMeters;
     }
 
+    /**
+     * Gets the heading.
+     */
     public double getHeading() {
         return _headingDegrees;
     }
