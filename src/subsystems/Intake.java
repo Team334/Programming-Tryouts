@@ -1,7 +1,6 @@
 package src.subsystems;
 
 import lib.Motor;
-import lib.Util;
 
 /**
  * Intake subsystem.
@@ -23,9 +22,5 @@ public class Intake {
         System.out.println("INTAKING");
 
         // TODO
-
-        // Set motor to max power
-        // Use Util.sleep() to run for the required duration
-        // Stop motor when done
     }
 }

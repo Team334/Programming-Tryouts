@@ -1,7 +1,6 @@
 package src.subsystems;
 
 import lib.Motor;
-import lib.Util;
 
 /**
  * Shooter subsystem.
@@ -22,9 +21,5 @@ public class Shooter {
         System.out.println("SHOOTING");
 
         // TODO
-
-        // Motor should spin at full power
-        // Use Util.sleep() to maintain spin for required duration
-        // Stop motor when done
     }
 }

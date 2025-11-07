@@ -2,7 +2,6 @@ package src.subsystems;
 
 import lib.FieldPosition;
 import lib.Motor;
-import lib.Util;
 import lib.VisionSystem;
 import src.Constants;
 
@@ -77,10 +76,6 @@ public class Drive {
      */
     private void rotateDegrees(double degreesToRotate) {
         // TODO
-
-        // Set all the motors to max power, making sure to include the correct signs for rotation (note: Math.signum() can help here)
-        // Util.sleep() for the right amount of time
-        // Stop all the motors
     }
 
     /**
@@ -88,9 +83,5 @@ public class Drive {
      */
     private void driveMeters(double metersToDrive) {
         // TODO 
-
-        // Set all the motors to max power, making sure to include the correct sign for forwards/backwards (note: Math.signum() can help here)
-        // Util.sleep() for the right amount of time
-        // Stop all the motors
     }
 }
