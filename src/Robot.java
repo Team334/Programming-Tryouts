@@ -18,6 +18,10 @@ public class Robot {
      */
     private void cycle() {
         // TODO
+        _drive.driveToGamePiecePosition();
+        _intake.intake();
+        _drive.driveToScoringPosition();
+        _shooter.shoot();
     }
 
     /**
