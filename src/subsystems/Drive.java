@@ -33,7 +33,7 @@ public class Drive {
 
         FieldPosition gamePiecePosition = _visionSystem.getGamePiecePosition();
 
-        driveToPosition(gamePiecePosition);
+        driveToPosition(gamePiecePosition, true);
     }
 
     /**
@@ -42,18 +42,20 @@ public class Drive {
     public void driveToScoringPosition() {
         System.out.println("DRIVING TO SCORING POSITION");
 
-        driveToPosition(Constants.scoringPosition);
+        driveToPosition(Constants.scoringPosition, false);
     }
 
     /**
      * Drives to the given position.
      * 
      * First, the chassis rotates to face the position, then it drive to it, and then it rotates again to the position's heading.
+     * 
+     * @param reversed If this is true, the robot should drive backwards to the position instead of forwards.
      */
-    private void driveToPosition(FieldPosition position) {
+    private void driveToPosition(FieldPosition position, boolean reversed) {
         // TODO
 
-        // Rotate to face the position
+        // Rotate to face the position (considering reversed or not)
         // Drive to the position
         
         _latestPosition = new FieldPosition(
