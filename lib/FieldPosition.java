@@ -28,21 +28,21 @@ public class FieldPosition {
     }
 
     /**
-     * Gets the X coordinate.
+     * Gets the X coordinate in meters.
      */
     public double getX() {
         return _xMeters;
     }
 
     /**
-     * Gets the Y coordinate.
+     * Gets the Y coordinate in meters.
      */
     public double getY() {
         return _yMeters;
     }
 
     /**
-     * Gets the heading.
+     * Gets the heading in degrees.
      */
     public double getHeading() {
         return _headingDegrees;

@@ -22,7 +22,7 @@ public class Motor {
      *               1 = full forward
      */
     public void setPower(double power) {
-        _power = Math.max(Math.min(-1, power), 1);
+        _power = Math.max(-1, Math.min(1, power));
     }
 
     /**
