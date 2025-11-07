@@ -27,9 +27,5 @@ public class Intake {
         // Set motor to max power
         // Use Util.sleep() to run for the required duration
         // Stop motor when done
-
-        _intakeMotor.setPower(1.0);
-        Util.sleep(2);
-        _intakeMotor.setPower(0.0);
     }
 }

@@ -55,8 +55,6 @@ public class Drive {
 
         // Rotate to face the position
         // Drive to the position
-        rotateDegrees(_latestPosition.angleTo(position));
-        driveMeters(_latestPosition.distanceTo(position));
         
         _latestPosition = new FieldPosition(
             position.getX(),
@@ -65,7 +63,6 @@ public class Drive {
         ); // DO NOT DELETE
 
         // Rotate to the position's heading
-        rotateDegrees(_latestPosition.angleTo(position));
 
         _latestPosition = position; // DO NOT DELETE
 
@@ -82,18 +79,6 @@ public class Drive {
         // Set all the motors to max power, making sure to include the correct signs for rotation
         // Util.sleep() for the right amount of time
         // Stop all the motors
-
-        _flMotor.setPower(-Math.signum(degreesToRotate));
-        _blMotor.setPower(-Math.signum(degreesToRotate));
-        _frMotor.setPower(Math.signum(degreesToRotate));
-        _brMotor.setPower(Math.signum(degreesToRotate));
-
-        Util.sleep(Math.abs(degreesToRotate / Constants.maxRobotAngularSpeedDegreesPerSecond));
-
-        _flMotor.setPower(0.0);
-        _blMotor.setPower(0.0);
-        _frMotor.setPower(0.0);
-        _brMotor.setPower(0.0);
     }
 
     /**
@@ -105,17 +90,5 @@ public class Drive {
         // Set all the motors to max power, making sure to include the correct sign for forwards/backwards
         // Util.sleep() for the right amount of time
         // Stop all the motors
-
-        _flMotor.setPower(Math.signum(metersToDrive));
-        _blMotor.setPower(Math.signum(metersToDrive));
-        _frMotor.setPower(Math.signum(metersToDrive));
-        _brMotor.setPower(Math.signum(metersToDrive));
-
-        Util.sleep(Math.abs(metersToDrive / Constants.maxRobotSpeedMetersPerSecond));
-
-        _flMotor.setPower(0.0);
-        _blMotor.setPower(0.0);
-        _frMotor.setPower(0.0);
-        _brMotor.setPower(0.0); 
     }
 }
