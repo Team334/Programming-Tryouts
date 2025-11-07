@@ -17,7 +17,7 @@ The Shooter subsystem is **located on the front of the robot**, and consists of 
 ![](Shooter.png)
 
 # Autonomous Routine
-![](Field.png)
+![](Field.png)  
 
 You will be given 30 min to code and debug. **You must code in the functions where there is a //TODO indication**. Your objective is to code an autonomous routine that’ll pick up and score as many game pieces as possible by executing periodic “cycles” in the routine. 
 

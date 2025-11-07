@@ -20,5 +20,5 @@ public class Constants {
     public static final double maxRobotAngularSpeedDegreesPerSecond = Math.toDegrees(2 * maxRobotSpeedMetersPerSecond / trackWidthMeters);
 
     /** The scoring position. */
-    public static final FieldPosition scoringPosition = new FieldPosition(10, 10, 10);
+    public static final FieldPosition scoringPosition = new FieldPosition(7.5, 5, 0);
 }
