@@ -28,12 +28,36 @@ public class FieldPosition {
     }
 
     /**
-     * Calculates the distance between two FieldPositions.
+     * Calculates the distance between this FieldPosition and another FieldPosition.
+     * 
+     * @param other The other FieldPosition.
+     * 
+     * @return The distance in meters.
      */
-    public static double distance(FieldPosition a, FieldPosition b) {
-        double deltaX = b.getX() - a.getX();
-        double deltaY = b.getY() - a.getY();
+    public double distanceTo(FieldPosition other) {
+        double deltaX = other.getX() - getX();
+        double deltaY = other.getY() - getY();
 
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    /**
+     * Calculates the angle from this FieldPosition to another FieldPosition.
+     * 
+     * @param other The other FieldPosition.
+     * 
+     * @return The angle in degrees.
+     */
+    public double angleTo(FieldPosition other) {
+        double deltaX = other.getX() - getX();
+        double deltaY = other.getY() - getY();
+
+        double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+
+        if (angle < 0) {
+            angle += 360;
+        }
+
+        return angle - getHeading();
     }
 }

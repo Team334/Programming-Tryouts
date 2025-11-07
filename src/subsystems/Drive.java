@@ -52,20 +52,42 @@ public class Drive {
     private void driveToPosition(FieldPosition position) {
         // TODO
 
-        _latestPosition = position;
+        // Rotate to face the position
+        // Drive to the position
+        
+        _latestPosition = new FieldPosition(
+            position.getX(),
+            position.getY(),
+            _latestPosition.getHeading() + _latestPosition.angleTo(position)
+        ); // DO NOT DELETE
+
+        // Rotate to the position's heading
+
+        _latestPosition = position; // DO NOT DELETE
+
+        System.out.println("ARRIVED AT POSITION: (" + _latestPosition.getX() + ", " + _latestPosition.getY() + ", " + _latestPosition.getHeading() + ")"); // DO NOT DELETE
     }
 
+
     /**
-     * Rotates the chassis by the given degrees.
+     * Rotates the chassis at max speed by the given amount of degrees.
      */
     private void rotateDegrees(double degreesToRotate) {
         // TODO
+
+        // Set all the motors to max power, making sure to include the correct signs for rotation
+        // Util.sleep() for the right amount of time
+        // Stop all the motors
     }
 
     /**
-     * Drives forwards at max speed by the given meters.
+     * Drives forwards at max speed by the given amount of meters.
      */
     private void driveMeters(double metersToDrive) {
         // TODO 
+
+        // Set all the motors to max power, making sure to include the correct sign for forwards/backwards
+        // Util.sleep() for the right amount of time
+        // Stop all the motors
     }
 }

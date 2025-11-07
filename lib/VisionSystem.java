@@ -7,7 +7,7 @@ public class VisionSystem {
      */
     public FieldPosition getGamePiecePosition() {
         return new FieldPosition(
-            Math.random() * 10,
+            Math.random() * 15,
             Math.random() * 10,
             0 // unimportant here
         );
