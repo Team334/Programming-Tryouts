@@ -2,7 +2,7 @@
 
 ## What this class is
 
-`Commands` is this project's rundown version of the command-scheduling framework WPILib is moving to **"Commands v3"** ([design doc](https://github.com/wpilibsuite/allwpilib/blob/main/design-docs/commands-v3.md)). It exists to solve one specific annoyance with the *old* command framework: every command used to be split into four separate callback methods:
+`Commands` is this project's rundown version of the command-scheduling framework WPILib is moving to **"Commands v3"** ([design doc](https://github.com/wpilibsuite/allwpilib/blob/main/design-docs/commands-v3.md)). It exists to solve one specific annoyance with the _old_ command framework: every command used to be split into four separate callback methods:
 
 - `initialize()` — runs once, when the command starts
 - `execute()` — runs once per scheduler loop, over and over, until...
@@ -19,17 +19,17 @@ Commands.run(co -> {
 }).requiring(intake);
 ```
 
-Real WPILib Commands v3 achieves this using a `Coroutine` built on **JDK continuations**. **This class does not use continuations.** Instead it gets the same programming *syntax* by giving every command its own real **virtual thread** (`Thread.ofVirtual()`). The command's body just runs as normal blocking Java code on that thread; "**yielding**" is really just that thread pausing or sleeping while other commands' threads do the same.
+Real WPILib Commands v3 achieves this using a `Coroutine` built on **JDK continuations**. **This class does not use continuations.** Instead it gets the same programming _syntax_ by giving every command its own real **virtual thread** (`Thread.ofVirtual()`). The command's body just runs as normal blocking Java code on that thread; "**yielding**" is really just that thread pausing or sleeping while other commands' threads do the same.
 
 ### `Command` (record)
 
 A `Command` is a description of a unit of robot behavior. It does nothing on its own until it's handed to `Commands.schedule(...)`. It bundles three things:
 
-| Field | Type | Meaning |
-|---|---|---|
-| `body` | `Consumer<Coroutine>` | The actual code to run, as a lambda that takes a `Coroutine` and runs top to bottom. |
-| `requirements` | `Set<Object>` | The subsystems/motors/etc. This command needs exclusive use of. Anything can be a requirement |
-| `name` | `String` | Defaults to `"Command"`. |
+| Field          | Type                  | Meaning                                                                                       |
+| -------------- | --------------------- | --------------------------------------------------------------------------------------------- |
+| `body`         | `Consumer<Coroutine>` | The actual code to run, as a lambda that takes a `Coroutine` and runs top to bottom.          |
+| `requirements` | `Set<Object>`         | The subsystems/motors/etc. This command needs exclusive use of. Anything can be a requirement |
+| `name`         | `String`              | Defaults to `"Command"`.                                                                      |
 
 `Command` has two methods that return a **new** `Command` rather than mutating the original (records are immutable):
 
@@ -47,7 +47,7 @@ Commands.run(co -> { ... }).requiring(shooter).named("Spin Up Shooter");
 This is what a command's body uses to cooperate with everything else going on. A fresh one is created for each running command and passed into its body lambda. It has three methods:
 
 - **`yield()`** — **Call this inside any hand-written loop** in a command body (e.g. `while (!atTarget) { ...; co.yield(); }`). It's a checkpoint: it checks whether this command's thread has been interrupted (cancelled), and if so, throws internally to unwind out of the command. If a loop never calls `yield()` that command **won't notice it's been cancelled** until it happens to hit one of these calls.
-- **`sleep(double seconds)`** — Pauses *only this command's thread* for the given duration and the rest of the robot keeps running.
+- **`sleep(double seconds)`** — Pauses _only this command's thread_ for the given duration and the rest of the robot keeps running.
 - **`await(Command command)`** — Runs another command and blocks this one until it finishes.
 
 ### Cancellation (`Cancelled`)
@@ -58,18 +58,19 @@ A unchecked exception used purely as a control-flow signal meaning "this command
 
 The `owners` map (`Map<Object, Thread>`) is the whole interruption mechanism: it tracks which thread currently "owns" each requirement object. When a command is scheduled:
 
-1. For each of its requirements, check if some other *still-alive* thread already owns it.
+1. For each of its requirements, check if some other _still-alive_ thread already owns it.
 2. If so, print a console message and call `.interrupt()` on that thread. This is a **cooperative** interrupt and the old command's thread only actually stops the next time it hits a `yield()`, `sleep()`, or `await()` call, at which point `Cancelled` is thrown and that command's `finally` block runs.
-3. Claim ownership of all of this command's requirements for the new thread *before* starting it, so a command needing two things can't have another command sneak in and claim one of them mid-way.
+3. Claim ownership of all of this command's requirements for the new thread _before_ starting it, so a command needing two things can't have another command sneak in and claim one of them mid-way.
 4. When the command's thread finishes (normal completion or `Cancelled`), it `finally` block releases ownership of each requirement.
 
 A command with no requirements (the default, `Set.of()`) never interrupts anything and is never interrupted by ownership conflicts.
 
 ## API reference
 
-| Method | Returns | What it does |
-|---|---|---|
-| `Commands.run(Consumer<Coroutine> body)` | `Command` | Wraps a body into a `Command` with no requirements and the default name `"Command"`.  |
-| `Commands.sequence(Command... steps)` | `Command` | Builds one `Command` that runs each step in order, `await`-ing each before starting the next. |
-| `Commands.schedule(Command command)` | `Thread` | Starts a command on its own virtual thread and returns **immediately**. Handles interrupting whatever previously owned its requirements. |
-| `Commands.parallel(Command... commands)` | `void` | Schedules all given commands at once, then **blocks the calling thread** until every one of them has finished (or been interrupted). |
+| Method                                   | Returns   | What it does                                                                                                                             |
+| ---------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `Commands.run(Consumer<Coroutine> body)` | `Command` | Wraps a body into a `Command` with no requirements and the default name `"Command"`.                                                     |
+| `Commands.sequence(Command... steps)`    | `Command` | Builds one `Command` that runs each step in order, `await`-ing each before starting the next.                                            |
+| `Commands.schedule(Command command)`     | `Thread`  | Starts a command on its own virtual thread and returns **immediately**. Handles interrupting whatever previously owned its requirements. |
+| `Commands.parallel(Command... commands)` | `void`    | Schedules all given commands at once, then **blocks the calling thread** until every one of them has finished (or been interrupted).     |
+| `Commands.owner(Mechanism... mechanism)` | `Command` | Returns the command currently using this mechanism. Returns null if mechanism is currently idle.                                         |

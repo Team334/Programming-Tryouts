@@ -18,4 +18,17 @@ public class Util {
             System.out.println("sleep did not work");
         }
     }
+
+    /**
+     * Clamps a value between a specified minimum and maximum range: [-1, 1].
+     * <p>
+     * If the value is less than the minimum, the minimum is returned.
+     * If the value is greater than the maximum, the maximum is returned.
+     * Otherwise, the value itself is returned.
+     * 
+     * @param seconds The duration to sleep in seconds (will be clamped 1-135s)
+     */
+    public static double clamp(double value) {
+        return Math.max(-1, Math.min(1, value));
+    }
 }

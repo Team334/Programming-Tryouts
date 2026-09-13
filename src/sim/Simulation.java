@@ -25,13 +25,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * (WASD/arrows) over to the game piece, intake it, index it through the hopper, then drive
  * to the scoring zone and shoot — while all of those commands run concurrently instead of
  * blocking each other.
- *
+ * 
  * There's no auto-drive-to-target key on purpose: driving there is on you, the same way a
  * real driver would. The game piece and scoring zone are just markers to aim for.
- *
+ * 
  * This is a debugging/demo tool, not a scored part of the tryout — there's no physics
  * engine and no pickup/collision detection, so intake/hopper/shoot can be pressed any time.
- *
+ * 
  * Controls:
  *   W / Up     drive forward
  *   S / Down   drive backward
@@ -47,7 +47,6 @@ public class Simulation {
     private static final double FIELD_WIDTH_METERS = 16;
     private static final double FIELD_HEIGHT_METERS = 11;
     private static final int PIXELS_PER_METER = 50;
-    private static final double REPAINT_SECONDS = 0.02; // 50 Hz, just for how often we redraw
 
     // Full-power keyboard input maps directly to Constants' max speeds, and those work out
     // to a ~1031 deg/s turn rate — way too twitchy for WASD. Scale keyboard input down to
@@ -90,28 +89,37 @@ public class Simulation {
         frame.setFocusable(true);
         frame.setVisible(true);
 
-        // Drive is now its own Command instead of something we call directly every tick —
-        // schedule it once, as Drive's default command, and it keeps itself running on its
-        // own virtual thread by reading these suppliers each loop iteration.
-        Commands.schedule(_robot.drive.driveTeleop(this::currentForwardPower, this::currentRotatePower));
+        Commands.schedule(_robot.drive.driveTeleop(this::readForward, this::readRotate));
 
-        new Timer((int) (REPAINT_SECONDS * 1000), e -> panel.repaint()).start();
+        new Timer((int) (Constants.TICK_SECONDS * 1000), e -> {
+            tick();
+            panel.repaint();
+        }).start();
     }
 
-    /** Live forward power in [-1, 1] from whatever drive keys are currently held. */
-    private double currentForwardPower() {
+    /** Reads currently-held drive keys into a forward power, scaled down to something drivable. */
+    private double readForward() {
         double forward = 0;
+
         if (_pressedKeys.contains(KeyEvent.VK_W) || _pressedKeys.contains(KeyEvent.VK_UP)) forward += 1;
         if (_pressedKeys.contains(KeyEvent.VK_S) || _pressedKeys.contains(KeyEvent.VK_DOWN)) forward -= 1;
+
         return forward * FORWARD_SENSITIVITY;
     }
 
-    /** Live rotational power in [-1, 1] from whatever drive keys are currently held. */
-    private double currentRotatePower() {
+    /** Reads currently-held turn keys into a rotate power, scaled down to something drivable. */
+    private double readRotate() {
         double rotate = 0;
+
         if (_pressedKeys.contains(KeyEvent.VK_A) || _pressedKeys.contains(KeyEvent.VK_LEFT)) rotate += 1;
         if (_pressedKeys.contains(KeyEvent.VK_D) || _pressedKeys.contains(KeyEvent.VK_RIGHT)) rotate -= 1;
+
         return rotate * ROTATE_SENSITIVITY;
+    }
+
+    /** Runs every simulation tick — driving itself now happens on Drive's own command loop. */
+    private void tick() {
+        _robot.led.update();
     }
 
     /** Runs once per key press (not held): schedules the one-shot commands. */
@@ -143,6 +151,7 @@ public class Simulation {
             drawGamePiece(g2);
             drawScoringPosition(g2);
             drawRobot(g2);
+            drawLED(g2);
             drawControls(g2);
         }
 
@@ -187,6 +196,32 @@ public class Simulation {
             g2.setColor(Color.LIGHT_GRAY);
             g2.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
             g2.drawString("WASD/arrows: drive   I: intake   H: hopper   SPACE: shoot", 10, getHeight() - 10);
+        }
+
+        /** Draws a ring around the robot showing its current LED color (once that's implemented). */
+        private void drawLED(Graphics2D g2) {
+            FieldPosition pos = _robot.drive.getPosition();
+            int[] px = toPixels(pos);
+            double sizePx = 0.9 * PIXELS_PER_METER;
+
+            g2.setColor(colorFor(_robot.led.getColor()));
+            g2.setStroke(new java.awt.BasicStroke(3));
+            g2.drawOval((int) (px[0] - sizePx / 2 - 5), (int) (px[1] - sizePx / 2 - 5), (int) sizePx + 10, (int) sizePx + 10);
+            g2.setStroke(new java.awt.BasicStroke(1));
+        }
+
+        /** Maps an LED color name (whatever the LED subsystem hands it) to something drawable. */
+        private static Color colorFor(String name) {
+            return switch (name.toUpperCase()) {
+                case "RED" -> Color.RED;
+                case "GREEN" -> new Color(80, 220, 100);
+                case "BLUE" -> new Color(90, 160, 255);
+                case "ORANGE" -> new Color(230, 160, 40);
+                case "YELLOW" -> Color.YELLOW;
+                case "PURPLE" -> new Color(170, 100, 220);
+                case "OFF" -> Color.DARK_GRAY;
+                default -> Color.GRAY;
+            };
         }
 
         /** Converts a field position (meters, origin bottom-left) to panel pixels (origin top-left). */

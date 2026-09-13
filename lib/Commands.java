@@ -12,9 +12,9 @@ import java.util.function.Consumer;
  * The real v3 lets you write a whole command as one normal-looking, blocking-style method
  * instead of splitting it into initialize()/execute()/isFinished()/end() like the old
  * command framework. It does this with a Coroutine that the command periodically yields
- * control back to. 
+ * control back to.
  *
- * This version gets the same *syntax* of code by giving every running command its own real 
+ * This version gets the same *syntax* of code by giving every running command its own real
  * Java virtual thread. Subsystems actually run at the same time instead of one big loop faking it.
  *
  */
@@ -23,6 +23,7 @@ public final class Commands {
 
     /** One unit of robot behavior. Build these with Commands.run(...). */
     public record Command(Consumer<Coroutine> body, Set<Object> requirements, String name) {
+
         /**
          * Declares which subsystems (or individual motors) this command needs exclusive
          * control of. Scheduling a command that requires something another running command
@@ -45,6 +46,7 @@ public final class Commands {
 
     /** Handed to every running command's body so it can cooperate with everything else. */
     public static final class Coroutine {
+
         /** Call this inside any loop you write, so other commands get a chance to run. */
         public void yield() {
             if (Thread.interrupted()) {
@@ -72,7 +74,7 @@ public final class Commands {
     /** Thrown internally when a command gets interrupted. Commands don't need to catch this. */
     private static final class Cancelled extends RuntimeException {
         private Cancelled() {
-            super(null, null, false, false); // skip filling in a stack trace, this isn't a bug
+            super(null, null, false, false);
         }
     }
 
@@ -90,42 +92,87 @@ public final class Commands {
         }).named("Sequence");
     }
 
-    // Which thread is currently allowed to use each requirement (subsystem/motor/etc).
+    // Which thread is currently allowed to use each requirement.
     private static final Map<Object, Thread> owners = new ConcurrentHashMap<>();
+
+    // Which Command belongs to each running thread.
+    private static final Map<Thread, Command> threadToCommand = new ConcurrentHashMap<>();
+
+
+    /**
+     * Returns the command currently using this mechanism.
+     * Returns null if the mechanism is currently idle.
+     */
+    public static Command owner(Mechanism mechanism) {
+        Thread thread = owners.get(mechanism);
+
+        if (thread == null || !thread.isAlive()) {
+            return null;
+        }
+
+        return threadToCommand.get(thread);
+    }
+
 
     /** Starts a command on its own virtual thread and returns immediately. */
     public static Thread schedule(Command command) {
+
         for (Object req : command.requirements()) {
             Thread current = owners.get(req);
 
             if (current != null && current.isAlive()) {
-                System.out.println("[Commands] " + command + " is interrupting whatever was using " + req);
+                System.out.println(
+                    "[Commands] " + command
+                    + " is interrupting whatever was using " + req
+                );
+
                 current.interrupt();
             }
         }
 
-        Thread thread = Thread.ofVirtual().name(command.name()).unstarted(() -> {
-            System.out.println("[Commands] starting: " + command);
+        Thread thread = Thread.ofVirtual()
+            .name(command.name())
+            .unstarted(() -> {
 
-            try {
-                command.body().accept(new Coroutine());
-                System.out.println("[Commands] finished: " + command);
-            } catch (Cancelled e) {
-                System.out.println("[Commands] interrupted: " + command);
-            } finally {
-                for (Object req : command.requirements()) {
-                    owners.remove(req, Thread.currentThread());
+                System.out.println("[Commands] starting: " + command);
+
+                try {
+                    command.body().accept(new Coroutine());
+
+                    System.out.println("[Commands] finished: " + command);
+
+                } catch (Cancelled e) {
+
+                    System.out.println("[Commands] interrupted: " + command);
+
+                } finally {
+
+                    // Forget which command this thread was running.
+                    threadToCommand.remove(Thread.currentThread());
+
+                    // Give up ownership of all requirements.
+                    for (Object req : command.requirements()) {
+                        owners.remove(req, Thread.currentThread());
+                    }
                 }
-            }
-        });
+            });
 
+
+        // Remember which command this thread is running.
+        threadToCommand.put(thread, command);
+
+
+        // Give this thread ownership of the command's requirements.
         for (Object req : command.requirements()) {
             owners.put(req, thread);
         }
 
+
         thread.start();
+
         return thread;
     }
+
 
     /** Starts several commands at the same time and waits for ALL of them to finish. */
     public static void parallel(Command... commands) {
@@ -139,6 +186,7 @@ public final class Commands {
             join(thread);
         }
     }
+
 
     private static void join(Thread thread) {
         try {

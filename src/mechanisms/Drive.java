@@ -1,9 +1,11 @@
-package src.subsystems;
+package src.mechanisms;
 
 import lib.Commands;
 import lib.Commands.Command;
 import lib.FieldPosition;
+import lib.Mechanism;
 import lib.Motor;
+import lib.Util;
 import src.Constants;
 
 import java.util.function.DoubleSupplier;
@@ -11,7 +13,7 @@ import java.util.function.DoubleSupplier;
 /**
  * Drive subsystem.
  */
-public class Drive {
+public class Drive extends Mechanism {
 
     // Four drive motors for independent wheel control
     private final Motor _flMotor = new Motor();
@@ -19,15 +21,14 @@ public class Drive {
     private final Motor _brMotor = new Motor();
     private final Motor _blMotor = new Motor();
 
-    // Read from the UI/telemetry thread (e.g. Simulation's paintComponent) while the
-    // teleop command's own virtual thread writes it every loop iteration — volatile so
-    // those reads always see the latest position instead of a stale cached one.
     private volatile FieldPosition _latestPosition = new FieldPosition();
 
     /**
      * Creates a new Drive subsystem.
      */
-    public Drive() {}
+    public Drive() {
+        super("Drive");
+    }
 
     /**
      * Builds the teleop driving Command: an arcade-style drive loop that reads live
@@ -35,8 +36,6 @@ public class Drive {
      * TICK_SECONDS intervals, until it's interrupted — e.g. by scheduling some other
      * command that also requires this subsystem.
      *
-     * This is meant to be scheduled once as Drive's default command (see Simulation),
-     * rather than called directly every tick like the old driveTeleop(...) method was.
      *
      * @param forwardPower Supplies forward power in [-1, 1].
      * @param rotatePower Supplies rotational power in [-1, 1] (positive = counterclockwise).
@@ -50,12 +49,14 @@ public class Drive {
         }).requiring(this).named("Drive Teleop");
     }
 
-    /** The robot's current estimated position — used for display/telemetry (e.g. Simulation). */
+
+    /** The robot's current estimated position. */
     public FieldPosition getPosition() {
         return _latestPosition;
     }
 
-    /** 
+    /**
+     * Drives for dtSeconds given rotational and forward power.
      * 
      * @param forwardPower Supplies forward power in [-1, 1].
      * @param rotatePower Supplies rotational power in [-1, 1] (positive = counterclockwise).
@@ -63,8 +64,8 @@ public class Drive {
      */
     private void drive(double forwardPower, double rotatePower, double dtSeconds) {
         // 1. Calculate the power going to each side
-        double leftPower = clamp(...);
-        double rightPower = clamp(...);
+        double leftPower = Util.clamp(...);
+        double rightPower = Util.clamp(...);
 
         // 2. Set those powers to the motors to respective side
 
@@ -86,9 +87,5 @@ public class Drive {
         );
 
         // 7. Set Motor Speeds to 0
-    }
-
-    private static double clamp(double power) {
-        return Math.max(-1, Math.min(1, power));
     }
 }
