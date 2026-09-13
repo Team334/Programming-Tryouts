@@ -12,15 +12,11 @@ import java.util.function.Consumer;
  * The real v3 lets you write a whole command as one normal-looking, blocking-style method
  * instead of splitting it into initialize()/execute()/isFinished()/end() like the old
  * command framework. It does this with a Coroutine that the command periodically yields
- * control back to. Under the hood it's built on JDK continuations, which aren't really
- * meant for regular application code to use directly.
+ * control back to. 
  *
- * This version gets the same *shape* of code (write a straight-line method, hand it a
- * Coroutine, call coroutine.yield()/sleep()/await() instead of blocking the whole robot)
- * by giving every running command its own real Java virtual thread. Subsystems actually
- * run at the same time instead of one big loop faking it.
+ * This version gets the same *syntax* of code by giving every running command its own real 
+ * Java virtual thread. Subsystems actually run at the same time instead of one big loop faking it.
  *
- * Requires Java 21+ (uses Thread.ofVirtual() and records).
  */
 public final class Commands {
     private Commands() {}
@@ -58,7 +54,7 @@ public final class Commands {
             Thread.onSpinWait();
         }
 
-        /** Pauses just this command (NOT the whole robot) for the given number of seconds. */
+        /** Pauses just this command for the given number of seconds. */
         public void sleep(double seconds) {
             try {
                 Thread.sleep((long) (seconds * 1000));
@@ -97,7 +93,7 @@ public final class Commands {
     // Which thread is currently allowed to use each requirement (subsystem/motor/etc).
     private static final Map<Object, Thread> owners = new ConcurrentHashMap<>();
 
-    /** Starts a command on its own virtual thread and returns immediately (doesn't wait for it). */
+    /** Starts a command on its own virtual thread and returns immediately. */
     public static Thread schedule(Command command) {
         for (Object req : command.requirements()) {
             Thread current = owners.get(req);
