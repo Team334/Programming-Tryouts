@@ -1,5 +1,6 @@
 package src;
 
+import lib.FieldPosition;
 import lib.Motor;
 
 /**
@@ -17,6 +18,9 @@ public class Constants {
     
     /** Max robot angular speed in deg/s. */
     public static final double maxRobotAngularSpeedDegreesPerSecond = Math.toDegrees(2 * maxRobotSpeedMetersPerSecond / trackWidthMeters);
+
+    /** The scoring position. */
+    public static final FieldPosition scoringPosition = new FieldPosition(7.5, 5, 0);
 
     /** How long the intake spins for when run. */
     public static final double intakeRunTimeSeconds = 2;
