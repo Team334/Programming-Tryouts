@@ -1,37 +1,30 @@
 package src;
 
+import src.sim.Simulation;
 import src.subsystems.Drive;
+import src.subsystems.Hopper;
 import src.subsystems.Intake;
 import src.subsystems.Shooter;
 
 /**
- * Main robot class that coordinates all subsystems and executes the autonomous routine.
+ * Main robot class that owns all subsystems.
+ * 
+ * There's no fixed autonomous routine anymore — main() instead hands control to the
+ * keyboard-driven Simulation (src/sim/Simulation.java), which schedules commands on
+ * these subsystems in response to key presses, the same way real teleop code schedules
+ * commands in response to joystick buttons. Because each command runs on its own
+ * virtual thread (see lib/Commands.java), driving, intaking, indexing, and shooting can
+ * all genuinely happen at the same time — try holding a drive key and pressing I/H/SPACE.
  */
 public class Robot {
-    private final Drive _drive = new Drive();
-    private final Shooter _shooter = new Shooter();
-    private final Intake _intake = new Intake();
-
-    /**
-     * Performs one "cycle" of the autonomous routine. This means driving to a game piece, intaking it,
-     * driving to the scoring position, and then shooting it.
-     */
-    private void cycle() {
-        // TODO
-    }
-
-    /**
-     * The autonomous routine.
-     */
-    private void autonomous() {
-        while (true) {
-            cycle();
-        }
-    }
+    public final Drive drive = new Drive();
+    public final Intake intake = new Intake();
+    public final Hopper hopper = new Hopper();
+    public final Shooter shooter = new Shooter();
 
     public static void main(String[] args) {
         Robot robot = new Robot();
-    
-        robot.autonomous();
+
+        new Simulation(robot).run();
     }
 }

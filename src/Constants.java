@@ -1,6 +1,5 @@
 package src;
 
-import lib.FieldPosition;
 import lib.Motor;
 
 /**
@@ -19,6 +18,15 @@ public class Constants {
     /** Max robot angular speed in deg/s. */
     public static final double maxRobotAngularSpeedDegreesPerSecond = Math.toDegrees(2 * maxRobotSpeedMetersPerSecond / trackWidthMeters);
 
-    /** The scoring position. */
-    public static final FieldPosition scoringPosition = new FieldPosition(7.5, 5, 0);
+    /** How long the intake spins for when run. */
+    public static final double intakeRunTimeSeconds = 2;
+
+    /** How long the hopper spins for when indexing. */
+    public static final double hopperIndexTimeSeconds = 2;
+
+    /** How long the shooter spins for when shooting. */
+    public static final double shooterRunTimeSeconds = 4;
+
+    /* Loop rate for the teleop drive command. */
+    public static final double TICK_SECONDS = 0.02;
 }

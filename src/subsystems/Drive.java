@@ -1,23 +1,28 @@
 package src.subsystems;
 
+import lib.Commands;
+import lib.Commands.Command;
 import lib.FieldPosition;
 import lib.Motor;
-import lib.VisionSystem;
 import src.Constants;
+
+import java.util.function.DoubleSupplier;
 
 /**
  * Drive subsystem.
  */
 public class Drive {
+
     // Four drive motors for independent wheel control
     private final Motor _flMotor = new Motor();
     private final Motor _frMotor = new Motor();
     private final Motor _brMotor = new Motor();
     private final Motor _blMotor = new Motor();
 
-    private final VisionSystem _visionSystem = new VisionSystem();
-
-    private FieldPosition _latestPosition = new FieldPosition();
+    // Read from the UI/telemetry thread (e.g. Simulation's paintComponent) while the
+    // teleop command's own virtual thread writes it every loop iteration — volatile so
+    // those reads always see the latest position instead of a stale cached one.
+    private volatile FieldPosition _latestPosition = new FieldPosition();
 
     /**
      * Creates a new Drive subsystem.
@@ -25,63 +30,65 @@ public class Drive {
     public Drive() {}
 
     /**
-     * Drives to the position (as returned by the vision system) of a game piece.
+     * Builds the teleop driving Command: an arcade-style drive loop that reads live
+     * forward/rotate power from the given suppliers once per iteration, at roughly
+     * TICK_SECONDS intervals, until it's interrupted — e.g. by scheduling some other
+     * command that also requires this subsystem.
+     *
+     * This is meant to be scheduled once as Drive's default command (see Simulation),
+     * rather than called directly every tick like the old driveTeleop(...) method was.
+     *
+     * @param forwardPower Supplies forward power in [-1, 1].
+     * @param rotatePower Supplies rotational power in [-1, 1] (positive = counterclockwise).
      */
-    public void driveToGamePiecePosition() {
-        System.out.println("DRIVING TO GAME PIECE POSITION");
-
-        FieldPosition gamePiecePosition = _visionSystem.getGamePiecePosition();
-
-        driveToPosition(gamePiecePosition, true);
+    public Command driveTeleop(DoubleSupplier forwardPower, DoubleSupplier rotatePower) {
+        return Commands.run(co -> {
+            while (true) {
+                drive(forwardPower.getAsDouble(), rotatePower.getAsDouble(), Constants.TICK_SECONDS);
+                co.sleep(Constants.TICK_SECONDS);
+            }
+        }).requiring(this).named("Drive Teleop");
     }
 
-    /**
-     * Drives to the position of the scoring location.
-     */
-    public void driveToScoringPosition() {
-        System.out.println("DRIVING TO SCORING POSITION");
-
-        driveToPosition(Constants.scoringPosition, false);
+    /** The robot's current estimated position — used for display/telemetry (e.g. Simulation). */
+    public FieldPosition getPosition() {
+        return _latestPosition;
     }
 
-    /**
-     * Drives to the given position.
+    /** 
      * 
-     * First, the chassis rotates to face the position, then it drive to it, and then it rotates again to the position's heading.
-     * 
-     * @param reversed If this is true, the robot should drive backwards to the position instead of forwards.
+     * @param forwardPower Supplies forward power in [-1, 1].
+     * @param rotatePower Supplies rotational power in [-1, 1] (positive = counterclockwise).
+     * @param dtSeconds Supplies the time elapsed
      */
-    private void driveToPosition(FieldPosition position, boolean reversed) {
-        // TODO
+    private void drive(double forwardPower, double rotatePower, double dtSeconds) {
+        // 1. Calculate the power going to each side
+        double leftPower = clamp(...);
+        double rightPower = clamp(...);
 
-        // Rotate to face the position (considering reversed or not)
-        // Drive to the position
-        
+        // 2. Set those powers to the motors to respective side
+
+        // 3. Estimate forward and rotational speed. Check constants.
+        double forwardSpeed = ;
+        double angularSpeed = ;
+
+        // 4. Update the robot's heading using the angular speed and time elapsed
+        double newHeading = ;
+
+        // 5. Convert the new heading to radians
+        double headingRad = ;
+
+        // 6. Update position
         _latestPosition = new FieldPosition(
-            position.getX(),
-            position.getY(),
-            _latestPosition.getHeading() + _latestPosition.angleTo(position)
-        ); // DO NOT DELETE
+            _latestPosition.getX() + forwardSpeed * Math.cos(headingRad) * dtSeconds,
+            _latestPosition.getY() + forwardSpeed * Math.sin(headingRad) * dtSeconds,
+            newHeading
+        );
 
-        // Rotate to the position's heading
-
-        _latestPosition = position; // DO NOT DELETE
-
-        System.out.println("ARRIVED AT POSITION: (" + _latestPosition.getX() + ", " + _latestPosition.getY() + ", " + _latestPosition.getHeading() + ")"); // DO NOT DELETE
+        // 7. Set Motor Speeds to 0
     }
 
-
-    /**
-     * Rotates the chassis at max speed by the given amount of degrees.
-     */
-    private void rotateDegrees(double degreesToRotate) {
-        // TODO
-    }
-
-    /**
-     * Drives forwards at max speed by the given amount of meters.
-     */
-    private void driveMeters(double metersToDrive) {
-        // TODO 
+    private static double clamp(double power) {
+        return Math.max(-1, Math.min(1, power));
     }
 }

@@ -1,6 +1,9 @@
 package src.subsystems;
 
+import lib.Commands;
+import lib.Commands.Command;
 import lib.Motor;
+import src.Constants;
 
 /**
  * Intake subsystem.
@@ -16,11 +19,9 @@ public class Intake {
 
     /** 
      * Runs the intake mechanism to collect a game piece.
-     * Operates for 2 seconds at full power.
+     * Spins at full power for Constants.intakeRunTimeSeconds, then stops.
      */
-    public void intake() {
-        System.out.println("INTAKING");
-
+    public Command intake() {
         // TODO
     }
 }

@@ -1,6 +1,9 @@
 package src.subsystems;
 
+import lib.Commands;
+import lib.Commands.Command;
 import lib.Motor;
+import src.Constants;
 
 /**
  * Shooter subsystem.
@@ -15,11 +18,9 @@ public class Shooter {
     public Shooter() {}
 
     /** 
-     * Spins feeders and shoots for 4 seconds.
+     * Spins feeders and shoots. Spins at full power for Constants.shooterRunTimeSeconds, then stops.
      */
-    public void shoot() {
-        System.out.println("SHOOTING");
-
+    public Command shoot() {
         // TODO
     }
 }
