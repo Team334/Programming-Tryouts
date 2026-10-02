@@ -1,10 +1,12 @@
 package src.mechanisms;
 
+
 import lib.Commands;
 import lib.Mechanism;
 import lib.Commands.Command;
 import lib.Motor;
 import src.Constants;
+
 
 /**
  * Hopper subsystem.
@@ -14,6 +16,7 @@ public class Hopper extends Mechanism {
     private final Motor _leftMotor = new Motor();
     private final Motor _rightMotor = new Motor();
 
+
     /**
      * Creates a new Hopper subsystem.
      */
@@ -21,11 +24,22 @@ public class Hopper extends Mechanism {
         super("Hopper");
     }
 
+
     /**
      * Spins both feeder motors at full power to index game pieces toward the shooter,
      * for Constants.hopperIndexTimeSeconds, then stops.
      */
     public Command index() {
-        // TODO: Run the intake motor for Constants.hopperIndexTimeSeconds using commands
+        return Commands.run(co -> {
+            _leftMotor.setPower(1);
+            _rightMotor.setPower(1);
+
+
+            co.sleep(Constants.hopperIndexTimeSeconds);
+
+
+            _leftMotor.setPower(0);
+            _rightMotor.setPower(0);
+        }).requiring(this).named("Hopper: Index");
     }
 }
