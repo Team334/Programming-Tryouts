@@ -1,0 +1,19 @@
+{
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/desktop-lite:1": {
+			"version": "latest",
+			"webPort": "6080",
+			"vncPort": "5901"
+		}
+	},
+	"forwardPorts": [6080],
+	"portsAttributes": {
+		"6080": {
+			"label": "Swing desktop",
+			"onAutoForward": "openBrowser"
+		}
+	}
+}
