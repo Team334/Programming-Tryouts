@@ -4,7 +4,7 @@ package lib;
  * Represents a motor on the robot.
  */
 public class Motor {
-    private double _power;
+    private volatile double _power;
 
     public static final double maxSpeedRPS = 30;
 
@@ -23,6 +23,11 @@ public class Motor {
      */
     public void setPower(double power) {
         _power = Math.max(-1, Math.min(1, power));
+    }
+
+    /** Gets the current motor power in [-1, 1], for the simulation readout. */
+    public double getPower() {
+        return _power;
     }
 
     /**
