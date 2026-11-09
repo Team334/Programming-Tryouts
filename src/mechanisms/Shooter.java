@@ -23,20 +23,16 @@ public class Shooter extends Mechanism {
         super("Shooter");
     }
 
+    /** Current motor power for the simulation readout. */
+    public double getMotorPower() {
+        return _shooterMotor.getPower();
+    }
 
     /**
      * Spins feeders and shoots. Spins at full power for Constants.shooterRunTimeSeconds, then stops.
      */
     public Command shoot() {
-        return Commands.run(co -> {
-            _shooterMotor.setPower(1);
-
-
-            co.sleep(Constants.shooterRunTimeSeconds);
-
-
-            _shooterMotor.setPower(0);
-        }).requiring(this).named("Shooter: Shoot");
+        // TODO: Run the shooter motor for Constants.shooterRunTimeSeconds using commands
+        return ;
     }
 }
-

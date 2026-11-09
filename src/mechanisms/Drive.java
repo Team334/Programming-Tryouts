@@ -66,6 +66,11 @@ public class Drive extends Mechanism {
         return _latestPosition;
     }
 
+    
+    private static double clamp(double power) {
+        return Math.max(-1, Math.min(1, power));
+    }
+
 
     /**
      *
@@ -74,34 +79,30 @@ public class Drive extends Mechanism {
      * @param dtSeconds Supplies the time elapsed
      */
     private void drive(double forwardPower, double rotatePower, double dtSeconds) {
-        double leftPower = clamp(forwardPower + rotatePower);
-        double rightPower = clamp(forwardPower - rotatePower);
+        // TODO
+        // 1. Calculate left/right motor powers from forward/rotate inputs, clamped to [-1, 1].
+        double leftPower = ;
+        double rightPower = ;
+
+        // 2. Set the motor powers to respective motors (front/back left/right).
+
+        // 3. Update Foward/Angular speeds using Constants.maxRobotSpeedMetersPerSecond and Constants.maxRobotAngularSpeedDegreesPerSecond
+        double forwardSpeed = ;
+        double angularSpeed = ;
 
 
-        _flMotor.setPower(leftPower);
-        _blMotor.setPower(leftPower);
-        _frMotor.setPower(rightPower);
-        _brMotor.setPower(rightPower);
+        // 4. Update the robot's position based on the forward and angular speeds, and the time elapsed (dtSeconds)
+        double newHeading = ;
+        double headingRad = ;
 
-
-        double forwardSpeed = (leftPower + rightPower) / 2 * Constants.maxRobotSpeedMetersPerSecond;
-        double angularSpeed = (rightPower - leftPower) / 2 * Constants.maxRobotAngularSpeedDegreesPerSecond;
-
-
-        double newHeading = _latestPosition.getHeading() + angularSpeed * dtSeconds;
-        double headingRad = Math.toRadians(newHeading);
-
-
+        // 5. set motor powers to 0
+        
+        // Don't Touch
         _latestPosition = new FieldPosition(
             _latestPosition.getX() + forwardSpeed * Math.cos(headingRad) * dtSeconds,
             _latestPosition.getY() + forwardSpeed * Math.sin(headingRad) * dtSeconds,
             newHeading
         );
-    }
-
-
-    private static double clamp(double power) {
-        return Math.max(-1, Math.min(1, power));
     }
 }
 

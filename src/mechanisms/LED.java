@@ -30,7 +30,6 @@ public class LED extends Mechanism {
     public LED(Drive drive, Intake intake, Hopper hopper, Shooter shooter) {
         super("LED");
 
-
         _drive = drive;
         _intake = intake;
         _hopper = hopper;
@@ -43,17 +42,7 @@ public class LED extends Mechanism {
      * the LEDs in sync with whatever's currently running.
      */
     public void update() {
-        if (Commands.owner(_shooter) != null) {
-            _leds.setColor("red");
-        } else if (Commands.owner(_hopper) != null) {
-            _leds.setColor("yellow");
-        } else if (Commands.owner(_intake) != null) {
-            _leds.setColor("green");
-        } else if (Commands.owner(_drive) != null) {
-            _leds.setColor("blue");
-        } else {
-            _leds.setColor("white");
-        }
+        // TODO: Set the LEDs' color based on which mechanism is currently owned by a command.
     }
 
 

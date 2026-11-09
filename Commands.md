@@ -2,14 +2,10 @@
 
 ## What this class is
 
-`Commands` is this project's rundown version of the command-scheduling framework WPILib is moving to **"Commands v3"** ([design doc](https://github.com/wpilibsuite/allwpilib/blob/main/design-docs/commands-v3.md)). It exists to solve one specific annoyance with the _old_ command framework: every command used to be split into four separate callback methods:
+`Commands` is a runnable that tells the robot what to do.
 
-- `initialize()` — runs once, when the command starts
-- `execute()` — runs once per scheduler loop, over and over, until...
-- `isFinished()` — returns `true` to signal "stop calling execute()"
-- `end(interrupted)` — runs once, when the command stops
-
-which means even a simple "spin the intake for two seconds" command ends up scattered across four methods and a manually-tracked timer field. Commands v3 lets you write that as one normal, top-to-bottom method instead:
+### For example:
+"spin the intake for two seconds" Commands lets you write that as one normal, top-to-bottom method instead:
 
 ```java
 Commands.run(co -> {
@@ -18,8 +14,6 @@ Commands.run(co -> {
     intake.setPower(0.0);
 }).requiring(intake);
 ```
-
-Real WPILib Commands v3 achieves this using a `Coroutine` built on **JDK continuations**. **This class does not use continuations.** Instead it gets the same programming _syntax_ by giving every command its own real **virtual thread** (`Thread.ofVirtual()`). The command's body just runs as normal blocking Java code on that thread; "**yielding**" is really just that thread pausing or sleeping while other commands' threads do the same.
 
 ### `Command` (record)
 

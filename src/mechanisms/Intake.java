@@ -23,21 +23,17 @@ public class Intake extends Mechanism {
         super("Intake");
     }
 
+    /** Current motor power for the simulation readout. */
+    public double getMotorPower() {
+        return _intakeMotor.getPower();
+    }
 
     /**
      * Runs the intake mechanism to collect a game piece.
      * Spins at full power for Constants.intakeRunTimeSeconds, then stops.
      */
     public Command intake() {
-        return Commands.run(co -> {
-            _intakeMotor.setPower(1);
-
-
-            co.sleep(Constants.intakeRunTimeSeconds);
-
-
-            _intakeMotor.setPower(0);
-        }).requiring(this).named("Intake");
+        // TODO: Run the intake motor for Constants.intakeRunTimeSeconds using commands
+        return ;
     }
 }
-
